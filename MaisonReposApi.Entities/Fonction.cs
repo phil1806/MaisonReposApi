@@ -10,5 +10,7 @@ namespace MaisonReposApi.Entities
     {
         public int Id { get; set; }
         public string? fonction { get; set; }
+        public ICollection<Personnel>? Personnels { get; set; }  
+
     }
 }

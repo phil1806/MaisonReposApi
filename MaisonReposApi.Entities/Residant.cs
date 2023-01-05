@@ -15,6 +15,7 @@ namespace MaisonReposApi.Entities
         public DateTime DateNass { get; set; } = DateTime.Now;
         public DateTime DateEntre { get; set; } = DateTime.Now;
         public DateTime DateSortie { get; set; }=DateTime.Now;
-        public bool? IsActive { get; set; }
+        public bool? IsActive { get; set; } = true;
+        public ResidantSuivi? residantSuivi { get; set; }
     }
 }

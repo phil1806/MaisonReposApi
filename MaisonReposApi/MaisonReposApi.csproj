@@ -21,7 +21,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Controllers\" />
     <Folder Include="Documentations\" />
+    <Folder Include="Helper\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Models\Dtos\" />
+    <Folder Include="Models\Forms\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

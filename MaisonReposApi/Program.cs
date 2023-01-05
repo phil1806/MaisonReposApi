@@ -1,3 +1,6 @@
+using MaisonReposApi.Domaines.DataContext;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +9,23 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+//Ici je fais appel à ma connectionString
+builder.Services.AddDbContext<myDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("defaultConnection"));
+
+});
+
+
+
+
+
+
+//builder.Services.AddDbContext<myDbContext>(options =>
+//{
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("defaultConnection"));
+//});
 
 var app = builder.Build();
 

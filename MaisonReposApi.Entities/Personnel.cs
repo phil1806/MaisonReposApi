@@ -13,9 +13,17 @@ namespace MaisonReposApi.Entities
         public  string? Prenom {get; set; }
         public string? Email { get; set; }
         public string? Matricule { get; set; }
-        public string? PasswordSalt { get; set; }
-        public string? PasswordHash { get; set; }
-        public bool? IsActive { get; set; }
+        public byte[]? PasswordSalt { get; set; }
+        public byte[]? PasswordHash { get; set; }
+        public bool? IsActive { get; set; } = true;
+        public Fonction? Fonction { get; set; }
+        public ICollection<Boisson>? Boissons { get; set; }
+        public ICollection<Selle>? Selles { get; set; }
+        public ICollection<Repas>? Repas { get; set; }
+        public ICollection<Toillette>? Toillettes { get; set; }
+        public ICollection<Parametre>? Parametres { get; set; }
+        public ICollection<Therapie>? therapies { get; set; }
+        public ICollection<TrancheHoraire>? trancheHoraires { get; set; }
 
     }
 }
