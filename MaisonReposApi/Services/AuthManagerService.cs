@@ -3,6 +3,9 @@ using MaisonReposApi.Domaines.DataContext;
 using MaisonReposApi.Entities;
 using MaisonReposApi.Interfaces;
 using MaisonReposApi.Models.Forms;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -10,22 +13,36 @@ namespace MaisonReposApi.Services
 {
     public class AuthManagerService : IAuthManagerService
     {
-
-
         private readonly MyDbContext _context;
-        private readonly IMapper _mapper;
+        private readonly IPersonnelService _personnelService;
+        private readonly string _secretKey;
 
-        public AuthManagerService(MyDbContext context, IMapper mapper)
+        public AuthManagerService(MyDbContext context, IPersonnelService personnelService, IConfiguration configuration)
         {
             _context = context;
-            _mapper = mapper;
+            _personnelService = personnelService;
+            _secretKey = configuration.GetSection("TokenInfo").GetSection("secret").Value;
         }
 
 
 
+        /// <summary>
+        /// Permet s'identifier sur l'application
+        /// </summary>
+        /// <param name="loginPersonnel"></param>
+        /// <returns>String (token)</returns>
         public string LoginPersonnel(LoginPersonnel loginPersonnel)
         {
-            throw new NotImplementedException();
+            //Je recupère menbre du Personnel avec le  Email correspondant
+           Personnel personnel = _personnelService.GetPersonnelByEmail( loginPersonnel.Email );
+           
+            //je verifie si le password est ok
+            if(!VerifyPasswordHash(loginPersonnel.Password, personnel.PasswordHash, personnel.PasswordSalt))
+            {
+                return "Error: wrong Password !";
+            }
+
+            return GenerateToken(personnel);
         }
 
 
@@ -45,7 +62,7 @@ namespace MaisonReposApi.Services
         /// <summary>
         /// Permet d'enregistrer une Data dans la base de données,
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Boolean</returns>
         public bool Save()
         {
             var saved = _context.SaveChanges();
@@ -68,5 +85,57 @@ namespace MaisonReposApi.Services
             }
         }
 
+        /// <summary>
+        /// Permet la vérification du mot de passe
+        /// </summary>
+        /// <param name="password"></param>
+        /// <param name="passwordHash"></param>
+        /// <param name="passwordSalt"></param>
+        /// <returns>Boolean</returns>
+
+
+        public bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
+        {
+            using (var hmac = new HMACSHA512(passwordSalt))
+            {
+                var compteHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+                return compteHash.SequenceEqual(passwordHash);
+
+            }
+        }
+
+        /// <summary>
+        /// Permet de génerer le token 
+        /// </summary>
+        /// <param name="personnel"></param>
+        /// <returns>String (token)</returns>
+      
+        public string GenerateToken(Personnel personnel)
+        {
+            //Creation de la signiature du token
+            SymmetricSecurityKey SecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));
+            SigningCredentials credentials = new SigningCredentials(SecurityKey, SecurityAlgorithms.HmacSha256Signature);
+
+            //Création des Payloads - claims
+            List<Claim> myClaims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, personnel.Nom),
+                new Claim(ClaimTypes.Email, personnel.Email),
+                new Claim("PersonelId", personnel.Id.ToString())
+            };
+
+            //configuration token
+            JwtSecurityToken token = new JwtSecurityToken(
+                claims: myClaims,
+                expires: DateTime.Now.AddDays(1),
+                signingCredentials: credentials
+
+             );
+
+            //je crée un gestionnaire de Token
+            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+
+            return tokenHandler.WriteToken(token);
+        }
     }
 }

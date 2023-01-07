@@ -2,7 +2,10 @@ using AutoMapper;
 using MaisonReposApi.Domaines.DataContext;
 using MaisonReposApi.Interfaces;
 using MaisonReposApi.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +32,22 @@ builder.Services.AddDbContext<MyDbContext>(options =>
 
 });
 
+
+//Expliquer à l'aplication comme valider le token 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
+    Options =>
+    {
+        Options.TokenValidationParameters = new TokenValidationParameters()
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                builder.Configuration.GetSection("TokenInfo").GetSection("secret").Value
+             ))
+        };
+    }
+);
 
 var app = builder.Build();
 

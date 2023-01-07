@@ -11,8 +11,6 @@ namespace MaisonReposApi.Domaines.Configurations.DbsetConfigurations
 {
     public class TrancheHoraireConfiguration : ConfigurationDesEntites<TrancheHoraire>
     {
- 
-
         public override void Configure(EntityTypeBuilder<TrancheHoraire> builder)
         {
 

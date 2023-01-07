@@ -24,6 +24,11 @@ namespace MaisonReposApi.Services
            return  _context.Personnels.ToList();
         }
 
+        public Personnel GetPersonnelByEmail(string email)
+        {
+            return _context.Personnels.Where(p => p.Email.Trim().ToUpper() == email.Trim().ToUpper()).FirstOrDefault();
+        }
+
 
         /// <summary>
         /// Permet de Verifier si une personne existe via son adresse Mail
