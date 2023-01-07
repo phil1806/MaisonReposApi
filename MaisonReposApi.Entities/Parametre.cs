@@ -13,9 +13,11 @@ namespace MaisonReposApi.Entities
         public double Tension { get; set; }
         public double Temperature { get; set; }
         public string? Desc { get; set; }
-        public Personnel? personnel { get; set; }
-        public CategorieDesSoin? CategorieDesSoin { get; set; }
-        public ResidantSuivi? residantSuivi { get; set; }
+
+        //Liste des foreignKey
+        public int personnelId { get; set; }
+        public int CategorieDesSoinId { get; set; }
+        public int residantSuiviId { get; set; }
 
 
     }

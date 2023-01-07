@@ -18,24 +18,17 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 //Injection  des Services
 builder.Services.AddScoped<IFonctionService, FonctionService>();
+builder.Services.AddScoped<IAuthManagerService, AuthManagerService>();
+builder.Services.AddScoped<IPersonnelService, PersonnelService>();
 
 
 //Ici je fais appel à ma connectionString
-builder.Services.AddDbContext<myDbContext>(options =>
+builder.Services.AddDbContext<MyDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("defaultConnection"));
 
 });
 
-
-
-
-
-
-//builder.Services.AddDbContext<myDbContext>(options =>
-//{
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("defaultConnection"));
-//});
 
 var app = builder.Build();
 

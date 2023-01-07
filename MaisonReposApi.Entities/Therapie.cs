@@ -11,14 +11,14 @@ namespace MaisonReposApi.Entities
         public int Id { get; set; }
         public DateTime Horaire { get; set; } = DateTime.Now;        
         public string? DescTherapie { get; set; }
-        public CategorieDesSoin? CategorieDesSoin { get; set; }
-        public Personnel? Personnel { get; set; }
-        public ResidantSuivi? residantSuivi { get; set; }
-        public ICollection<residantSuiviTherapie>? ResidantsuivisTherapies { get; set; }
-        public ICollection<TherapieTrancheHoraire>? TherapieTrancheHoraires { get; set; }
 
+        //Liste des Foreign Key
+        public int personnelCreatedId { get; set; }
+        public int CategorieDesSoinId { get; set; }
+        public int residantSuiviId { get; set; }
 
-
+        public  virtual ICollection<residantSuiviTherapie>? ResidantSuiviTherapies { get; set; } = new List<residantSuiviTherapie>();
+        public virtual ICollection<TherapieTrancheHoraire>? TherapieTrancheHoraires { get; set; } = new List<TherapieTrancheHoraire>();
 
     }
 }

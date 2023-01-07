@@ -12,9 +12,11 @@ namespace MaisonReposApi.Entities
         public bool IsDone { get; set; }
         public string?  DescToillete { get; set; }
         public DateTime DateTimeToillette { get; set; } = DateTime.Now;
-        public Personnel? Personnel { get; set; }
-        public CategorieDesSoin? CategorieDesSoin { get; set; }
-        public ResidantSuivi? residantSuivi { get; set; }
+
+        //Liste des foreign Key 
+        public int personnelId { get; set; }
+        public int CategorieDesSoinId { get; set; }
+        public int residantSuiviId { get; set; }
 
 
     }

@@ -23,10 +23,10 @@ namespace MaisonReposApi.Domaines.Configurations.DbsetConfigurations
             .IsRequired()
             .HasMaxLength(30);
 
-            builder.HasIndex(p => p.Email)
+            builder.HasIndex(p => p.Email,"Key_unique_email")
             .IsUnique();
 
-            builder.HasIndex(p => p.Matricule)
+            builder.HasIndex(p => p.Matricule,"Key_unique_matricule")
             .IsUnique();
 
             builder.Property(p => p.Matricule)
@@ -38,6 +38,7 @@ namespace MaisonReposApi.Domaines.Configurations.DbsetConfigurations
 
             builder.Property(p => p.PasswordSalt)
            .IsRequired();
+
             builder.Property(p => p.IsActive)
             .HasDefaultValue(true)
             .IsRequired();

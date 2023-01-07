@@ -18,6 +18,11 @@ namespace MaisonReposApi.Domaines.Configurations.DbsetConfigurations
             builder.Property(r => r.QteRepas)    
             .HasDefaultValue("Normal")            
             .IsRequired();
+
+            //Relation one-to-many
+            builder.HasOne<CategorieDesSoin>()
+                .WithMany(C => C.Repas)
+                .HasForeignKey(b => b.CategorieDesSoinId);
         }
     }
 }

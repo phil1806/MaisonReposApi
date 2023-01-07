@@ -16,15 +16,24 @@ namespace MaisonReposApi.Domaines.Configurations.DbsetConfigurations
         {
             builder.ToTable("ResidantSuiviTherapies");
 
-            builder.HasKey(rsTh => new { rsTh.IdTherapie, rsTh.IdResidantSuivi });
+            // One to many => (Personnel - ResidantSuivi)
+            builder.HasOne<Personnel>()
+            .WithMany(p => p.residantSuiviTherapies)
+            .HasForeignKey(rsTh => rsTh.PersonnelDoneId)
+            .OnDelete(DeleteBehavior.NoAction);
 
+            //Many- to - Many (residantSuivi -Therapies)
             builder.HasOne<ResidantSuivi>()
-           .WithMany(rs => rs.ResidantSuivisTherapies)
-           .HasForeignKey(rsTh => rsTh.IdResidantSuivi);
+           .WithMany(rs => rs.ResidantSuiviTherapies)
+           .HasForeignKey(rsTh => rsTh.IdResidantSuivi)
+            .OnDelete(DeleteBehavior.NoAction);
+
 
             builder.HasOne<Therapie>()
-            .WithMany(t => t.ResidantsuivisTherapies)
-            .HasForeignKey(rsTh => rsTh.IdTherapie);
+           .WithMany(t => t.ResidantSuiviTherapies)
+           .HasForeignKey(rsTh => rsTh.IdTherapie)
+            .OnDelete(DeleteBehavior.NoAction);
+
 
         }
     }

@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace MaisonReposApi.Domaines.DataContext
 {
-    public class myDbContext  : DbContext
+    public class MyDbContext : DbContext
     {
         //Contructeurs
-        public myDbContext(DbContextOptions<myDbContext>options): base(options)
+        public MyDbContext (DbContextOptions< MyDbContext >options): base(options)
         {
 
         }
@@ -28,6 +28,7 @@ namespace MaisonReposApi.Domaines.DataContext
         //Dbset Pour la liste  des residants suivi et la liste des categories des soins
         public DbSet<ResidantSuivi >? ResidantSuivis { get; set; }
         public DbSet<CategorieDesSoin>? CategorieDesSoins { get; set; }
+        public DbSet<SoinsAjout>? SoinsAjouts { get; set; }
 
 
         //Dbset  des soins
@@ -45,6 +46,7 @@ namespace MaisonReposApi.Domaines.DataContext
         //Dbset relation ManyToMany
         public DbSet<TherapieTrancheHoraire>? TherapieTrancheHoraires { get; set; }
         public DbSet<residantSuiviTherapie>? residantSuiviTherapies { get; set; }
+        public DbSet<SoinsAjoutResidantSuivi>? SoinsAjoutResidantSuivis { get; set; }
 
 
 
@@ -70,7 +72,9 @@ namespace MaisonReposApi.Domaines.DataContext
             modelBuilder.ApplyConfiguration(new ResidantSuiviTherapieConfiguration());
 
             modelBuilder.ApplyConfiguration(new TherapieTrancheHoraireConfiguration());
-            
+            modelBuilder.ApplyConfiguration(new SoinsAjoutConfiguration());
+            modelBuilder.ApplyConfiguration(new SoinsAjoutResidentSuiviConfiguration());
+
         }
 
 

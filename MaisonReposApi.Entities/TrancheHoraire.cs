@@ -10,8 +10,9 @@ namespace MaisonReposApi.Entities
     {
         public int Id { get; set; }
         public DateTime Horaire { get; set; }
-        public Personnel? Personnel { get; set; }
-        public ICollection<TherapieTrancheHoraire>? TherapieTrancheHoraires { get; set; }
+        public int personnelId { get; set; } //Foreign Key 
+        public ICollection<TherapieTrancheHoraire>? TherapieTrancheHoraires { get; set; } = new List<TherapieTrancheHoraire>();
+
 
     }
 }

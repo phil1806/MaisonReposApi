@@ -7,9 +7,9 @@ namespace MaisonReposApi.Services
 {
     public class FonctionService : IFonctionService
     {
-        private readonly myDbContext _context;
+        private readonly MyDbContext _context;
 
-        public FonctionService(myDbContext context)
+        public FonctionService(MyDbContext context)
         {
             _context = context;
         }

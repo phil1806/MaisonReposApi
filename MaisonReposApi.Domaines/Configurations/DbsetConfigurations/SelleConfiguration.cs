@@ -23,6 +23,11 @@ namespace MaisonReposApi.Domaines.Configurations.DbsetConfigurations
             .IsRequired()
             .HasDefaultValue("Normal");
 
+            //Relation one-to-many
+            builder.HasOne<CategorieDesSoin>()
+                .WithMany(C => C.Selles)
+                .HasForeignKey(s => s.CategorieDesSoinId);
+
         }
     }
 }

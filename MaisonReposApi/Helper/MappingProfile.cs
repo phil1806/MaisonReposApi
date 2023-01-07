@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MaisonReposApi.Entities;
 using MaisonReposApi.Models.Dtos;
+using MaisonReposApi.Models.Forms;
 
 namespace MaisonReposApi.Helper
 {
@@ -10,6 +11,9 @@ namespace MaisonReposApi.Helper
         {
             CreateMap<Fonction , FonctionDto>();
             CreateMap<FonctionDto, Fonction>();
+
+            CreateMap<Personnel, RegisterFormPersonnel>();
+            CreateMap<RegisterFormPersonnel, Personnel>();
 
         }
     }

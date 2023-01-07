@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 namespace MaisonReposApi.Entities
 {
     public class Fonction
-    {
+    {      
         public int Id { get; set; }
         public string? fonction { get; set; }
-        public ICollection<Personnel>? Personnels { get; set; }  
+        public virtual ICollection<Personnel>? Personnels { get; set; }  = new List<Personnel>();
 
     }
 }

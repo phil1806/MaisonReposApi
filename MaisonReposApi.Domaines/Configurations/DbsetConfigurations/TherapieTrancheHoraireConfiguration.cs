@@ -20,13 +20,16 @@ namespace MaisonReposApi.Domaines.Configurations.DbsetConfigurations
 
             builder.HasOne<Therapie>()
            .WithMany(t => t.TherapieTrancheHoraires)
-           .HasForeignKey(tTH => tTH.IdTherapie);
+           .HasForeignKey(tTH => tTH.IdTherapie)
+            .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne<TrancheHoraire>()
            .WithMany(t => t.TherapieTrancheHoraires)
-           .HasForeignKey(tTH => tTH.IdTrancheHoraire);
+           .HasForeignKey(tTH => tTH.IdTrancheHoraire)
+            .OnDelete(DeleteBehavior.NoAction);
+
 
         }
-          
+
     }
 }

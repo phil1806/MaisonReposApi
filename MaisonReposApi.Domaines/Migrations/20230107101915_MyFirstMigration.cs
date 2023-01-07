@@ -36,18 +36,22 @@ namespace MaisonReposApi.Domaines.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ResidantSuivis",
+                name: "Residants",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nom = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Prenom = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Matricule = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
+                    Matricule = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    DateNass = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateEntre = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateSortie = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ResidantSuivis", x => x.Id);
+                    table.PrimaryKey("PK_Residants", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -76,28 +80,73 @@ namespace MaisonReposApi.Domaines.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Residants",
+                name: "ResidantSuivis",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nom = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Prenom = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Matricule = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    DateNass = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateEntre = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateSortie = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
-                    residantSuiviId = table.Column<int>(type: "int", nullable: true)
+                    Matricule = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    residantId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Residants", x => x.Id);
+                    table.PrimaryKey("PK_ResidantSuivis", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Residants_ResidantSuivis_residantSuiviId",
-                        column: x => x.residantSuiviId,
-                        principalTable: "ResidantSuivis",
-                        principalColumn: "Id");
+                        name: "FK_ResidantSuivis_Residants_residantId",
+                        column: x => x.residantId,
+                        principalTable: "Residants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SoinsAjouts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DescSoins = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CategorieDesSoinsId = table.Column<int>(type: "int", nullable: false),
+                    PersonnelCreatedId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SoinsAjouts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SoinsAjouts_CategorieDesSoins_CategorieDesSoinsId",
+                        column: x => x.CategorieDesSoinsId,
+                        principalTable: "CategorieDesSoins",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SoinsAjouts_Personnels_PersonnelCreatedId",
+                        column: x => x.PersonnelCreatedId,
+                        principalTable: "Personnels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TrancheHoraires",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Horaire = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    personnelId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TrancheHoraires", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TrancheHoraires_Personnels_personnelId",
+                        column: x => x.personnelId,
+                        principalTable: "Personnels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -109,9 +158,9 @@ namespace MaisonReposApi.Domaines.Migrations
                     QteBoisson = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: "Normal"),
                     DescBoisson = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateTimeBoisson = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    personnelId = table.Column<int>(type: "int", nullable: true),
-                    CategorieDesSoinId = table.Column<int>(type: "int", nullable: true),
-                    residantSuiviId = table.Column<int>(type: "int", nullable: true)
+                    personnelId = table.Column<int>(type: "int", nullable: false),
+                    CategorieDesSoinId = table.Column<int>(type: "int", nullable: false),
+                    residantSuiviId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -120,17 +169,20 @@ namespace MaisonReposApi.Domaines.Migrations
                         name: "FK_Boissons_CategorieDesSoins_CategorieDesSoinId",
                         column: x => x.CategorieDesSoinId,
                         principalTable: "CategorieDesSoins",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Boissons_Personnels_personnelId",
                         column: x => x.personnelId,
                         principalTable: "Personnels",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Boissons_ResidantSuivis_residantSuiviId",
                         column: x => x.residantSuiviId,
                         principalTable: "ResidantSuivis",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -143,9 +195,9 @@ namespace MaisonReposApi.Domaines.Migrations
                     Tension = table.Column<double>(type: "float", nullable: false, defaultValue: 12.6),
                     Temperature = table.Column<double>(type: "float", nullable: false, defaultValue: 36.700000000000003),
                     Desc = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    personnelId = table.Column<int>(type: "int", nullable: true),
-                    CategorieDesSoinId = table.Column<int>(type: "int", nullable: true),
-                    residantSuiviId = table.Column<int>(type: "int", nullable: true)
+                    personnelId = table.Column<int>(type: "int", nullable: false),
+                    CategorieDesSoinId = table.Column<int>(type: "int", nullable: false),
+                    residantSuiviId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -154,17 +206,20 @@ namespace MaisonReposApi.Domaines.Migrations
                         name: "FK_Parametres_CategorieDesSoins_CategorieDesSoinId",
                         column: x => x.CategorieDesSoinId,
                         principalTable: "CategorieDesSoins",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Parametres_Personnels_personnelId",
                         column: x => x.personnelId,
                         principalTable: "Personnels",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Parametres_ResidantSuivis_residantSuiviId",
                         column: x => x.residantSuiviId,
                         principalTable: "ResidantSuivis",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -175,9 +230,9 @@ namespace MaisonReposApi.Domaines.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     QteRepas = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: "Normal"),
                     DescRepas = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    personnelId = table.Column<int>(type: "int", nullable: true),
-                    CategorieDesSoinId = table.Column<int>(type: "int", nullable: true),
-                    residantSuiviId = table.Column<int>(type: "int", nullable: true)
+                    personnelId = table.Column<int>(type: "int", nullable: false),
+                    CategorieDesSoinId = table.Column<int>(type: "int", nullable: false),
+                    residantSuiviId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -186,17 +241,20 @@ namespace MaisonReposApi.Domaines.Migrations
                         name: "FK_Repas_CategorieDesSoins_CategorieDesSoinId",
                         column: x => x.CategorieDesSoinId,
                         principalTable: "CategorieDesSoins",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Repas_Personnels_personnelId",
                         column: x => x.personnelId,
                         principalTable: "Personnels",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Repas_ResidantSuivis_residantSuiviId",
                         column: x => x.residantSuiviId,
                         principalTable: "ResidantSuivis",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -208,9 +266,9 @@ namespace MaisonReposApi.Domaines.Migrations
                     NbreDeSelle = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
                     DescSelle = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: "Normal"),
                     DateTimeSelle = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PersonnelId = table.Column<int>(type: "int", nullable: true),
-                    CategorieDesSoinId = table.Column<int>(type: "int", nullable: true),
-                    residantSuiviId = table.Column<int>(type: "int", nullable: true)
+                    personnelId = table.Column<int>(type: "int", nullable: false),
+                    CategorieDesSoinId = table.Column<int>(type: "int", nullable: false),
+                    residantSuiviId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -219,17 +277,20 @@ namespace MaisonReposApi.Domaines.Migrations
                         name: "FK_Selles_CategorieDesSoins_CategorieDesSoinId",
                         column: x => x.CategorieDesSoinId,
                         principalTable: "CategorieDesSoins",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Selles_Personnels_PersonnelId",
-                        column: x => x.PersonnelId,
+                        name: "FK_Selles_Personnels_personnelId",
+                        column: x => x.personnelId,
                         principalTable: "Personnels",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Selles_ResidantSuivis_residantSuiviId",
                         column: x => x.residantSuiviId,
                         principalTable: "ResidantSuivis",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -238,11 +299,11 @@ namespace MaisonReposApi.Domaines.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Horaire = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 1, 5, 13, 59, 55, 217, DateTimeKind.Local).AddTicks(4482)),
+                    Horaire = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 1, 7, 11, 19, 15, 335, DateTimeKind.Local).AddTicks(4874)),
                     DescTherapie = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false, defaultValue: "Contactez medecin."),
-                    CategorieDesSoinId = table.Column<int>(type: "int", nullable: true),
-                    PersonnelId = table.Column<int>(type: "int", nullable: true),
-                    residantSuiviId = table.Column<int>(type: "int", nullable: true)
+                    personnelCreatedId = table.Column<int>(type: "int", nullable: false),
+                    CategorieDesSoinId = table.Column<int>(type: "int", nullable: false),
+                    residantSuiviId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -251,17 +312,20 @@ namespace MaisonReposApi.Domaines.Migrations
                         name: "FK_Therapies_CategorieDesSoins_CategorieDesSoinId",
                         column: x => x.CategorieDesSoinId,
                         principalTable: "CategorieDesSoins",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Therapies_Personnels_PersonnelId",
-                        column: x => x.PersonnelId,
+                        name: "FK_Therapies_Personnels_personnelCreatedId",
+                        column: x => x.personnelCreatedId,
                         principalTable: "Personnels",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Therapies_ResidantSuivis_residantSuiviId",
                         column: x => x.residantSuiviId,
                         principalTable: "ResidantSuivis",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -273,9 +337,9 @@ namespace MaisonReposApi.Domaines.Migrations
                     IsDone = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     DescToillete = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateTimeToillette = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PersonnelId = table.Column<int>(type: "int", nullable: true),
-                    CategorieDesSoinId = table.Column<int>(type: "int", nullable: true),
-                    residantSuiviId = table.Column<int>(type: "int", nullable: true)
+                    personnelId = table.Column<int>(type: "int", nullable: false),
+                    CategorieDesSoinId = table.Column<int>(type: "int", nullable: false),
+                    residantSuiviId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -284,35 +348,61 @@ namespace MaisonReposApi.Domaines.Migrations
                         name: "FK_Toillettes_CategorieDesSoins_CategorieDesSoinId",
                         column: x => x.CategorieDesSoinId,
                         principalTable: "CategorieDesSoins",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Toillettes_Personnels_PersonnelId",
-                        column: x => x.PersonnelId,
+                        name: "FK_Toillettes_Personnels_personnelId",
+                        column: x => x.personnelId,
                         principalTable: "Personnels",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Toillettes_ResidantSuivis_residantSuiviId",
                         column: x => x.residantSuiviId,
                         principalTable: "ResidantSuivis",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "TrancheHoraires",
+                name: "SoinsAjoutResidantSuivis",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Horaire = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PersonnelId = table.Column<int>(type: "int", nullable: true)
+                    IdSoinsAjout = table.Column<int>(type: "int", nullable: false),
+                    IdResidantSuivi = table.Column<int>(type: "int", nullable: false),
+                    PersonnelId = table.Column<int>(type: "int", nullable: false),
+                    ResidantSuiviId = table.Column<int>(type: "int", nullable: true),
+                    SoinsAjoutId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TrancheHoraires", x => x.Id);
+                    table.PrimaryKey("PK_SoinsAjoutResidantSuivis", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TrancheHoraires_Personnels_PersonnelId",
+                        name: "FK_SoinsAjoutResidantSuivis_Personnels_PersonnelId",
                         column: x => x.PersonnelId,
                         principalTable: "Personnels",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_SoinsAjoutResidantSuivis_ResidantSuivis_IdResidantSuivi",
+                        column: x => x.IdResidantSuivi,
+                        principalTable: "ResidantSuivis",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_SoinsAjoutResidantSuivis_ResidantSuivis_ResidantSuiviId",
+                        column: x => x.ResidantSuiviId,
+                        principalTable: "ResidantSuivis",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_SoinsAjoutResidantSuivis_SoinsAjouts_IdSoinsAjout",
+                        column: x => x.IdSoinsAjout,
+                        principalTable: "SoinsAjouts",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_SoinsAjoutResidantSuivis_SoinsAjouts_SoinsAjoutId",
+                        column: x => x.SoinsAjoutId,
+                        principalTable: "SoinsAjouts",
                         principalColumn: "Id");
                 });
 
@@ -320,20 +410,27 @@ namespace MaisonReposApi.Domaines.Migrations
                 name: "ResidantSuiviTherapies",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     IdResidantSuivi = table.Column<int>(type: "int", nullable: false),
                     IdTherapie = table.Column<int>(type: "int", nullable: false),
+                    PersonnelDoneId = table.Column<int>(type: "int", nullable: false),
                     residantId = table.Column<int>(type: "int", nullable: true),
                     therapieId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ResidantSuiviTherapies", x => new { x.IdTherapie, x.IdResidantSuivi });
+                    table.PrimaryKey("PK_ResidantSuiviTherapies", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ResidantSuiviTherapies_Personnels_PersonnelDoneId",
+                        column: x => x.PersonnelDoneId,
+                        principalTable: "Personnels",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_ResidantSuiviTherapies_ResidantSuivis_IdResidantSuivi",
                         column: x => x.IdResidantSuivi,
                         principalTable: "ResidantSuivis",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_ResidantSuiviTherapies_ResidantSuivis_residantId",
                         column: x => x.residantId,
@@ -343,8 +440,7 @@ namespace MaisonReposApi.Domaines.Migrations
                         name: "FK_ResidantSuiviTherapies_Therapies_IdTherapie",
                         column: x => x.IdTherapie,
                         principalTable: "Therapies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_ResidantSuiviTherapies_Therapies_therapieId",
                         column: x => x.therapieId,
@@ -368,8 +464,7 @@ namespace MaisonReposApi.Domaines.Migrations
                         name: "FK_TherapieTrancheHoraires_Therapies_IdTherapie",
                         column: x => x.IdTherapie,
                         principalTable: "Therapies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_TherapieTrancheHoraires_Therapies_therapieId",
                         column: x => x.therapieId,
@@ -379,8 +474,7 @@ namespace MaisonReposApi.Domaines.Migrations
                         name: "FK_TherapieTrancheHoraires_TrancheHoraires_IdTrancheHoraire",
                         column: x => x.IdTrancheHoraire,
                         principalTable: "TrancheHoraires",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_TherapieTrancheHoraires_TrancheHoraires_trancheHoraireId",
                         column: x => x.trancheHoraireId,
@@ -425,18 +519,18 @@ namespace MaisonReposApi.Domaines.Migrations
                 column: "residantSuiviId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Personnels_Email",
-                table: "Personnels",
-                column: "Email",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Personnels_FonctionId",
                 table: "Personnels",
                 column: "FonctionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Personnels_Matricule",
+                name: "Key_unique_email",
+                table: "Personnels",
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "Key_unique_matricule",
                 table: "Personnels",
                 column: "Matricule",
                 unique: true);
@@ -457,16 +551,11 @@ namespace MaisonReposApi.Domaines.Migrations
                 column: "residantSuiviId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Residants_Matricule",
+                name: "Key_unique_matricule1",
                 table: "Residants",
                 column: "Matricule",
                 unique: true,
                 filter: "[Matricule] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Residants_residantSuiviId",
-                table: "Residants",
-                column: "residantSuiviId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ResidantSuivis_Matricule",
@@ -475,9 +564,24 @@ namespace MaisonReposApi.Domaines.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_ResidantSuivis_residantId",
+                table: "ResidantSuivis",
+                column: "residantId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ResidantSuiviTherapies_IdResidantSuivi",
                 table: "ResidantSuiviTherapies",
                 column: "IdResidantSuivi");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ResidantSuiviTherapies_IdTherapie",
+                table: "ResidantSuiviTherapies",
+                column: "IdTherapie");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ResidantSuiviTherapies_PersonnelDoneId",
+                table: "ResidantSuiviTherapies",
+                column: "PersonnelDoneId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ResidantSuiviTherapies_residantId",
@@ -495,9 +599,9 @@ namespace MaisonReposApi.Domaines.Migrations
                 column: "CategorieDesSoinId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Selles_PersonnelId",
+                name: "IX_Selles_personnelId",
                 table: "Selles",
-                column: "PersonnelId");
+                column: "personnelId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Selles_residantSuiviId",
@@ -505,14 +609,49 @@ namespace MaisonReposApi.Domaines.Migrations
                 column: "residantSuiviId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SoinsAjoutResidantSuivis_IdResidantSuivi",
+                table: "SoinsAjoutResidantSuivis",
+                column: "IdResidantSuivi");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SoinsAjoutResidantSuivis_IdSoinsAjout",
+                table: "SoinsAjoutResidantSuivis",
+                column: "IdSoinsAjout");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SoinsAjoutResidantSuivis_PersonnelId",
+                table: "SoinsAjoutResidantSuivis",
+                column: "PersonnelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SoinsAjoutResidantSuivis_ResidantSuiviId",
+                table: "SoinsAjoutResidantSuivis",
+                column: "ResidantSuiviId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SoinsAjoutResidantSuivis_SoinsAjoutId",
+                table: "SoinsAjoutResidantSuivis",
+                column: "SoinsAjoutId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SoinsAjouts_CategorieDesSoinsId",
+                table: "SoinsAjouts",
+                column: "CategorieDesSoinsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SoinsAjouts_PersonnelCreatedId",
+                table: "SoinsAjouts",
+                column: "PersonnelCreatedId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Therapies_CategorieDesSoinId",
                 table: "Therapies",
                 column: "CategorieDesSoinId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Therapies_PersonnelId",
+                name: "IX_Therapies_personnelCreatedId",
                 table: "Therapies",
-                column: "PersonnelId");
+                column: "personnelCreatedId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Therapies_residantSuiviId",
@@ -540,9 +679,9 @@ namespace MaisonReposApi.Domaines.Migrations
                 column: "CategorieDesSoinId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Toillettes_PersonnelId",
+                name: "IX_Toillettes_personnelId",
                 table: "Toillettes",
-                column: "PersonnelId");
+                column: "personnelId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Toillettes_residantSuiviId",
@@ -550,9 +689,9 @@ namespace MaisonReposApi.Domaines.Migrations
                 column: "residantSuiviId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TrancheHoraires_PersonnelId",
+                name: "IX_TrancheHoraires_personnelId",
                 table: "TrancheHoraires",
-                column: "PersonnelId");
+                column: "personnelId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -567,19 +706,22 @@ namespace MaisonReposApi.Domaines.Migrations
                 name: "Repas");
 
             migrationBuilder.DropTable(
-                name: "Residants");
-
-            migrationBuilder.DropTable(
                 name: "ResidantSuiviTherapies");
 
             migrationBuilder.DropTable(
                 name: "Selles");
 
             migrationBuilder.DropTable(
+                name: "SoinsAjoutResidantSuivis");
+
+            migrationBuilder.DropTable(
                 name: "TherapieTrancheHoraires");
 
             migrationBuilder.DropTable(
                 name: "Toillettes");
+
+            migrationBuilder.DropTable(
+                name: "SoinsAjouts");
 
             migrationBuilder.DropTable(
                 name: "Therapies");
@@ -595,6 +737,9 @@ namespace MaisonReposApi.Domaines.Migrations
 
             migrationBuilder.DropTable(
                 name: "Personnels");
+
+            migrationBuilder.DropTable(
+                name: "Residants");
 
             migrationBuilder.DropTable(
                 name: "Fonctions");

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MaisonReposApi.Domaines.Migrations
 {
-    [DbContext(typeof(myDbContext))]
-    [Migration("20230105125955_MyFirstMigration")]
+    [DbContext(typeof(MyDbContext))]
+    [Migration("20230107101915_MyFirstMigration")]
     partial class MyFirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,7 +32,7 @@ namespace MaisonReposApi.Domaines.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("CategorieDesSoinId")
+                    b.Property<int>("CategorieDesSoinId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateTimeBoisson")
@@ -47,10 +47,10 @@ namespace MaisonReposApi.Domaines.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("Normal");
 
-                    b.Property<int?>("personnelId")
+                    b.Property<int>("personnelId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("residantSuiviId")
+                    b.Property<int>("residantSuiviId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -111,7 +111,7 @@ namespace MaisonReposApi.Domaines.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("CategorieDesSoinId")
+                    b.Property<int>("CategorieDesSoinId")
                         .HasColumnType("int");
 
                     b.Property<string>("Desc")
@@ -132,10 +132,10 @@ namespace MaisonReposApi.Domaines.Migrations
                         .HasColumnType("float")
                         .HasDefaultValue(12.6);
 
-                    b.Property<int?>("personnelId")
+                    b.Property<int>("personnelId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("residantSuiviId")
+                    b.Property<int>("residantSuiviId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -194,12 +194,12 @@ namespace MaisonReposApi.Domaines.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Email")
-                        .IsUnique();
-
                     b.HasIndex("FonctionId");
 
-                    b.HasIndex("Matricule")
+                    b.HasIndex(new[] { "Email" }, "Key_unique_email")
+                        .IsUnique();
+
+                    b.HasIndex(new[] { "Matricule" }, "Key_unique_matricule")
                         .IsUnique();
 
                     b.ToTable("Personnels", (string)null);
@@ -213,7 +213,7 @@ namespace MaisonReposApi.Domaines.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("CategorieDesSoinId")
+                    b.Property<int>("CategorieDesSoinId")
                         .HasColumnType("int");
 
                     b.Property<string>("DescRepas")
@@ -225,10 +225,10 @@ namespace MaisonReposApi.Domaines.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("Normal");
 
-                    b.Property<int?>("personnelId")
+                    b.Property<int>("personnelId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("residantSuiviId")
+                    b.Property<int>("residantSuiviId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -276,16 +276,12 @@ namespace MaisonReposApi.Domaines.Migrations
                     b.Property<string>("Prenom")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("residantSuiviId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("Matricule")
+                    b.HasIndex(new[] { "Matricule" }, "Key_unique_matricule")
                         .IsUnique()
+                        .HasDatabaseName("Key_unique_matricule1")
                         .HasFilter("[Matricule] IS NOT NULL");
-
-                    b.HasIndex("residantSuiviId");
 
                     b.ToTable("Residants", (string)null);
                 });
@@ -311,20 +307,34 @@ namespace MaisonReposApi.Domaines.Migrations
                     b.Property<string>("Prenom")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("residantId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Matricule")
                         .IsUnique();
+
+                    b.HasIndex("residantId");
 
                     b.ToTable("ResidantSuivis", (string)null);
                 });
 
             modelBuilder.Entity("MaisonReposApi.Entities.residantSuiviTherapie", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("IdResidantSuivi")
+                        .HasColumnType("int");
+
                     b.Property<int>("IdTherapie")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdResidantSuivi")
+                    b.Property<int>("PersonnelDoneId")
                         .HasColumnType("int");
 
                     b.Property<int?>("residantId")
@@ -333,9 +343,13 @@ namespace MaisonReposApi.Domaines.Migrations
                     b.Property<int?>("therapieId")
                         .HasColumnType("int");
 
-                    b.HasKey("IdTherapie", "IdResidantSuivi");
+                    b.HasKey("Id");
 
                     b.HasIndex("IdResidantSuivi");
+
+                    b.HasIndex("IdTherapie");
+
+                    b.HasIndex("PersonnelDoneId");
 
                     b.HasIndex("residantId");
 
@@ -352,7 +366,7 @@ namespace MaisonReposApi.Domaines.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("CategorieDesSoinId")
+                    b.Property<int>("CategorieDesSoinId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateTimeSelle")
@@ -369,21 +383,88 @@ namespace MaisonReposApi.Domaines.Migrations
                         .HasColumnType("int")
                         .HasDefaultValue(1);
 
-                    b.Property<int?>("PersonnelId")
+                    b.Property<int>("personnelId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("residantSuiviId")
+                    b.Property<int>("residantSuiviId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategorieDesSoinId");
 
-                    b.HasIndex("PersonnelId");
+                    b.HasIndex("personnelId");
 
                     b.HasIndex("residantSuiviId");
 
                     b.ToTable("Selles", (string)null);
+                });
+
+            modelBuilder.Entity("MaisonReposApi.Entities.SoinsAjout", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CategorieDesSoinsId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DescSoins")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PersonnelCreatedId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategorieDesSoinsId");
+
+                    b.HasIndex("PersonnelCreatedId");
+
+                    b.ToTable("SoinsAjouts", (string)null);
+                });
+
+            modelBuilder.Entity("MaisonReposApi.Entities.SoinsAjoutResidantSuivi", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("IdResidantSuivi")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdSoinsAjout")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PersonnelId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ResidantSuiviId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SoinsAjoutId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdResidantSuivi");
+
+                    b.HasIndex("IdSoinsAjout");
+
+                    b.HasIndex("PersonnelId");
+
+                    b.HasIndex("ResidantSuiviId");
+
+                    b.HasIndex("SoinsAjoutId");
+
+                    b.ToTable("SoinsAjoutResidantSuivis", (string)null);
                 });
 
             modelBuilder.Entity("MaisonReposApi.Entities.Therapie", b =>
@@ -394,7 +475,7 @@ namespace MaisonReposApi.Domaines.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("CategorieDesSoinId")
+                    b.Property<int>("CategorieDesSoinId")
                         .HasColumnType("int");
 
                     b.Property<string>("DescTherapie")
@@ -407,19 +488,19 @@ namespace MaisonReposApi.Domaines.Migrations
                     b.Property<DateTime>("Horaire")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 1, 5, 13, 59, 55, 217, DateTimeKind.Local).AddTicks(4482));
+                        .HasDefaultValue(new DateTime(2023, 1, 7, 11, 19, 15, 335, DateTimeKind.Local).AddTicks(4874));
 
-                    b.Property<int?>("PersonnelId")
+                    b.Property<int>("personnelCreatedId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("residantSuiviId")
+                    b.Property<int>("residantSuiviId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategorieDesSoinId");
 
-                    b.HasIndex("PersonnelId");
+                    b.HasIndex("personnelCreatedId");
 
                     b.HasIndex("residantSuiviId");
 
@@ -459,7 +540,7 @@ namespace MaisonReposApi.Domaines.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("CategorieDesSoinId")
+                    b.Property<int>("CategorieDesSoinId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateTimeToillette")
@@ -473,17 +554,17 @@ namespace MaisonReposApi.Domaines.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
 
-                    b.Property<int?>("PersonnelId")
+                    b.Property<int>("personnelId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("residantSuiviId")
+                    b.Property<int>("residantSuiviId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategorieDesSoinId");
 
-                    b.HasIndex("PersonnelId");
+                    b.HasIndex("personnelId");
 
                     b.HasIndex("residantSuiviId");
 
@@ -501,109 +582,113 @@ namespace MaisonReposApi.Domaines.Migrations
                     b.Property<DateTime>("Horaire")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("PersonnelId")
+                    b.Property<int>("personnelId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PersonnelId");
+                    b.HasIndex("personnelId");
 
                     b.ToTable("TrancheHoraires", (string)null);
                 });
 
             modelBuilder.Entity("MaisonReposApi.Entities.Boisson", b =>
                 {
-                    b.HasOne("MaisonReposApi.Entities.CategorieDesSoin", "CategorieDesSoin")
+                    b.HasOne("MaisonReposApi.Entities.CategorieDesSoin", null)
                         .WithMany("Boissons")
-                        .HasForeignKey("CategorieDesSoinId");
+                        .HasForeignKey("CategorieDesSoinId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("MaisonReposApi.Entities.Personnel", "personnel")
+                    b.HasOne("MaisonReposApi.Entities.Personnel", null)
                         .WithMany("Boissons")
-                        .HasForeignKey("personnelId");
+                        .HasForeignKey("personnelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("MaisonReposApi.Entities.ResidantSuivi", "residantSuivi")
+                    b.HasOne("MaisonReposApi.Entities.ResidantSuivi", null)
                         .WithMany("Boissons")
-                        .HasForeignKey("residantSuiviId");
-
-                    b.Navigation("CategorieDesSoin");
-
-                    b.Navigation("personnel");
-
-                    b.Navigation("residantSuivi");
+                        .HasForeignKey("residantSuiviId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MaisonReposApi.Entities.Parametre", b =>
                 {
-                    b.HasOne("MaisonReposApi.Entities.CategorieDesSoin", "CategorieDesSoin")
+                    b.HasOne("MaisonReposApi.Entities.CategorieDesSoin", null)
                         .WithMany("Parametres")
-                        .HasForeignKey("CategorieDesSoinId");
+                        .HasForeignKey("CategorieDesSoinId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("MaisonReposApi.Entities.Personnel", "personnel")
+                    b.HasOne("MaisonReposApi.Entities.Personnel", null)
                         .WithMany("Parametres")
-                        .HasForeignKey("personnelId");
+                        .HasForeignKey("personnelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("MaisonReposApi.Entities.ResidantSuivi", "residantSuivi")
+                    b.HasOne("MaisonReposApi.Entities.ResidantSuivi", null)
                         .WithMany("Parametres")
-                        .HasForeignKey("residantSuiviId");
-
-                    b.Navigation("CategorieDesSoin");
-
-                    b.Navigation("personnel");
-
-                    b.Navigation("residantSuivi");
+                        .HasForeignKey("residantSuiviId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MaisonReposApi.Entities.Personnel", b =>
                 {
-                    b.HasOne("MaisonReposApi.Entities.Fonction", "Fonction")
+                    b.HasOne("MaisonReposApi.Entities.Fonction", null)
                         .WithMany("Personnels")
                         .HasForeignKey("FonctionId");
-
-                    b.Navigation("Fonction");
                 });
 
             modelBuilder.Entity("MaisonReposApi.Entities.Repas", b =>
                 {
-                    b.HasOne("MaisonReposApi.Entities.CategorieDesSoin", "CategorieDesSoin")
+                    b.HasOne("MaisonReposApi.Entities.CategorieDesSoin", null)
                         .WithMany("Repas")
-                        .HasForeignKey("CategorieDesSoinId");
+                        .HasForeignKey("CategorieDesSoinId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("MaisonReposApi.Entities.Personnel", "personnel")
+                    b.HasOne("MaisonReposApi.Entities.Personnel", null)
                         .WithMany("Repas")
-                        .HasForeignKey("personnelId");
+                        .HasForeignKey("personnelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("MaisonReposApi.Entities.ResidantSuivi", "residantSuivi")
+                    b.HasOne("MaisonReposApi.Entities.ResidantSuivi", null)
                         .WithMany("Repas")
-                        .HasForeignKey("residantSuiviId");
-
-                    b.Navigation("CategorieDesSoin");
-
-                    b.Navigation("personnel");
-
-                    b.Navigation("residantSuivi");
+                        .HasForeignKey("residantSuiviId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("MaisonReposApi.Entities.Residant", b =>
+            modelBuilder.Entity("MaisonReposApi.Entities.ResidantSuivi", b =>
                 {
-                    b.HasOne("MaisonReposApi.Entities.ResidantSuivi", "residantSuivi")
+                    b.HasOne("MaisonReposApi.Entities.Residant", null)
                         .WithMany("residants")
-                        .HasForeignKey("residantSuiviId");
-
-                    b.Navigation("residantSuivi");
+                        .HasForeignKey("residantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MaisonReposApi.Entities.residantSuiviTherapie", b =>
                 {
                     b.HasOne("MaisonReposApi.Entities.ResidantSuivi", null)
-                        .WithMany("ResidantSuivisTherapies")
+                        .WithMany("ResidantSuiviTherapies")
                         .HasForeignKey("IdResidantSuivi")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("MaisonReposApi.Entities.Therapie", null)
-                        .WithMany("ResidantsuivisTherapies")
+                        .WithMany("ResidantSuiviTherapies")
                         .HasForeignKey("IdTherapie")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("MaisonReposApi.Entities.Personnel", null)
+                        .WithMany("residantSuiviTherapies")
+                        .HasForeignKey("PersonnelDoneId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("MaisonReposApi.Entities.ResidantSuivi", "residant")
@@ -621,44 +706,92 @@ namespace MaisonReposApi.Domaines.Migrations
 
             modelBuilder.Entity("MaisonReposApi.Entities.Selle", b =>
                 {
-                    b.HasOne("MaisonReposApi.Entities.CategorieDesSoin", "CategorieDesSoin")
+                    b.HasOne("MaisonReposApi.Entities.CategorieDesSoin", null)
                         .WithMany("Selles")
-                        .HasForeignKey("CategorieDesSoinId");
+                        .HasForeignKey("CategorieDesSoinId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("MaisonReposApi.Entities.Personnel", "Personnel")
+                    b.HasOne("MaisonReposApi.Entities.Personnel", null)
                         .WithMany("Selles")
-                        .HasForeignKey("PersonnelId");
+                        .HasForeignKey("personnelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("MaisonReposApi.Entities.ResidantSuivi", "residantSuivi")
+                    b.HasOne("MaisonReposApi.Entities.ResidantSuivi", null)
                         .WithMany("Selles")
-                        .HasForeignKey("residantSuiviId");
+                        .HasForeignKey("residantSuiviId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                    b.Navigation("CategorieDesSoin");
+            modelBuilder.Entity("MaisonReposApi.Entities.SoinsAjout", b =>
+                {
+                    b.HasOne("MaisonReposApi.Entities.CategorieDesSoin", null)
+                        .WithMany("SoinsAjouts")
+                        .HasForeignKey("CategorieDesSoinsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Personnel");
+                    b.HasOne("MaisonReposApi.Entities.Personnel", null)
+                        .WithMany("SoinsAjouts")
+                        .HasForeignKey("PersonnelCreatedId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                    b.Navigation("residantSuivi");
+            modelBuilder.Entity("MaisonReposApi.Entities.SoinsAjoutResidantSuivi", b =>
+                {
+                    b.HasOne("MaisonReposApi.Entities.ResidantSuivi", null)
+                        .WithMany("SoinsAjoutResidantSuivis")
+                        .HasForeignKey("IdResidantSuivi")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("MaisonReposApi.Entities.SoinsAjout", null)
+                        .WithMany("SoinsAjoutResidantSuivis")
+                        .HasForeignKey("IdSoinsAjout")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("MaisonReposApi.Entities.Personnel", null)
+                        .WithMany("SoinsAjoutResidantsSuivis")
+                        .HasForeignKey("PersonnelId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("MaisonReposApi.Entities.ResidantSuivi", "ResidantSuivi")
+                        .WithMany()
+                        .HasForeignKey("ResidantSuiviId");
+
+                    b.HasOne("MaisonReposApi.Entities.SoinsAjout", "SoinsAjout")
+                        .WithMany()
+                        .HasForeignKey("SoinsAjoutId");
+
+                    b.Navigation("ResidantSuivi");
+
+                    b.Navigation("SoinsAjout");
                 });
 
             modelBuilder.Entity("MaisonReposApi.Entities.Therapie", b =>
                 {
-                    b.HasOne("MaisonReposApi.Entities.CategorieDesSoin", "CategorieDesSoin")
+                    b.HasOne("MaisonReposApi.Entities.CategorieDesSoin", null)
                         .WithMany("therapies")
-                        .HasForeignKey("CategorieDesSoinId");
+                        .HasForeignKey("CategorieDesSoinId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("MaisonReposApi.Entities.Personnel", "Personnel")
+                    b.HasOne("MaisonReposApi.Entities.Personnel", null)
                         .WithMany("therapies")
-                        .HasForeignKey("PersonnelId");
+                        .HasForeignKey("personnelCreatedId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("MaisonReposApi.Entities.ResidantSuivi", "residantSuivi")
+                    b.HasOne("MaisonReposApi.Entities.ResidantSuivi", null)
                         .WithMany("therapies")
-                        .HasForeignKey("residantSuiviId");
-
-                    b.Navigation("CategorieDesSoin");
-
-                    b.Navigation("Personnel");
-
-                    b.Navigation("residantSuivi");
+                        .HasForeignKey("residantSuiviId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MaisonReposApi.Entities.TherapieTrancheHoraire", b =>
@@ -666,13 +799,13 @@ namespace MaisonReposApi.Domaines.Migrations
                     b.HasOne("MaisonReposApi.Entities.Therapie", null)
                         .WithMany("TherapieTrancheHoraires")
                         .HasForeignKey("IdTherapie")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("MaisonReposApi.Entities.TrancheHoraire", null)
                         .WithMany("TherapieTrancheHoraires")
                         .HasForeignKey("IdTrancheHoraire")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("MaisonReposApi.Entities.Therapie", "therapie")
@@ -690,32 +823,32 @@ namespace MaisonReposApi.Domaines.Migrations
 
             modelBuilder.Entity("MaisonReposApi.Entities.Toillette", b =>
                 {
-                    b.HasOne("MaisonReposApi.Entities.CategorieDesSoin", "CategorieDesSoin")
+                    b.HasOne("MaisonReposApi.Entities.CategorieDesSoin", null)
                         .WithMany("Toillettes")
-                        .HasForeignKey("CategorieDesSoinId");
+                        .HasForeignKey("CategorieDesSoinId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("MaisonReposApi.Entities.Personnel", "Personnel")
+                    b.HasOne("MaisonReposApi.Entities.Personnel", null)
                         .WithMany("Toillettes")
-                        .HasForeignKey("PersonnelId");
+                        .HasForeignKey("personnelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("MaisonReposApi.Entities.ResidantSuivi", "residantSuivi")
+                    b.HasOne("MaisonReposApi.Entities.ResidantSuivi", null)
                         .WithMany("Toillettes")
-                        .HasForeignKey("residantSuiviId");
-
-                    b.Navigation("CategorieDesSoin");
-
-                    b.Navigation("Personnel");
-
-                    b.Navigation("residantSuivi");
+                        .HasForeignKey("residantSuiviId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MaisonReposApi.Entities.TrancheHoraire", b =>
                 {
-                    b.HasOne("MaisonReposApi.Entities.Personnel", "Personnel")
+                    b.HasOne("MaisonReposApi.Entities.Personnel", null)
                         .WithMany("trancheHoraires")
-                        .HasForeignKey("PersonnelId");
-
-                    b.Navigation("Personnel");
+                        .HasForeignKey("personnelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MaisonReposApi.Entities.CategorieDesSoin", b =>
@@ -727,6 +860,8 @@ namespace MaisonReposApi.Domaines.Migrations
                     b.Navigation("Repas");
 
                     b.Navigation("Selles");
+
+                    b.Navigation("SoinsAjouts");
 
                     b.Navigation("Toillettes");
 
@@ -748,11 +883,22 @@ namespace MaisonReposApi.Domaines.Migrations
 
                     b.Navigation("Selles");
 
+                    b.Navigation("SoinsAjoutResidantsSuivis");
+
+                    b.Navigation("SoinsAjouts");
+
                     b.Navigation("Toillettes");
+
+                    b.Navigation("residantSuiviTherapies");
 
                     b.Navigation("therapies");
 
                     b.Navigation("trancheHoraires");
+                });
+
+            modelBuilder.Entity("MaisonReposApi.Entities.Residant", b =>
+                {
+                    b.Navigation("residants");
                 });
 
             modelBuilder.Entity("MaisonReposApi.Entities.ResidantSuivi", b =>
@@ -763,20 +909,25 @@ namespace MaisonReposApi.Domaines.Migrations
 
                     b.Navigation("Repas");
 
-                    b.Navigation("ResidantSuivisTherapies");
+                    b.Navigation("ResidantSuiviTherapies");
 
                     b.Navigation("Selles");
 
-                    b.Navigation("Toillettes");
+                    b.Navigation("SoinsAjoutResidantSuivis");
 
-                    b.Navigation("residants");
+                    b.Navigation("Toillettes");
 
                     b.Navigation("therapies");
                 });
 
+            modelBuilder.Entity("MaisonReposApi.Entities.SoinsAjout", b =>
+                {
+                    b.Navigation("SoinsAjoutResidantSuivis");
+                });
+
             modelBuilder.Entity("MaisonReposApi.Entities.Therapie", b =>
                 {
-                    b.Navigation("ResidantsuivisTherapies");
+                    b.Navigation("ResidantSuiviTherapies");
 
                     b.Navigation("TherapieTrancheHoraires");
                 });

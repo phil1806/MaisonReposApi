@@ -23,7 +23,18 @@ namespace MaisonReposApi.Domaines.Configurations.DbsetConfigurations
             builder.Property(th => th.Horaire)
             .IsRequired()
             .HasDefaultValue(DateTime.Now);
-   
+
+            //Relation one-to-many (CategorieSoins - Therapies)
+            builder.HasOne<CategorieDesSoin>()
+                .WithMany(C => C.therapies)
+                .HasForeignKey(b => b.CategorieDesSoinId);
+
+
+            //Relation one-to-many (Personnels - Therapies)
+            builder.HasOne<Personnel>()
+              .WithMany(p => p.therapies)
+              .HasForeignKey(t => t.personnelCreatedId);
+
 
 
         }

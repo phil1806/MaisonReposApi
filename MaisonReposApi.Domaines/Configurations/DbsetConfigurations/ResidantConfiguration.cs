@@ -22,7 +22,7 @@ namespace MaisonReposApi.Domaines.Configurations.DbsetConfigurations
             builder.Property(r => r.DateNass)
             .IsRequired();
     
-            builder.HasIndex(r => r.Matricule)
+            builder.HasIndex(r => r.Matricule,"Key_unique_matricule")
             .IsUnique();
 
             builder.Property(r => r.IsActive)
