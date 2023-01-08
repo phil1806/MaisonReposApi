@@ -5,13 +5,13 @@ namespace MaisonReposApi.Interfaces
 {
     public interface IFonctionService
     {
-        public ICollection<Fonction> GetAllFonction();
-        public Fonction GetFonctionById(int fonctionId);
-        public bool FonctionExitsById(int fonctionId);
-        public bool FonctionExitsByName(string fonctionName);
-        public bool UpdateFonction(Fonction fonction);
-        public bool CreateFonction(Fonction fonction);
-        public bool DeleteFonction(Fonction fonction);
+         ICollection<Fonction> GetAllFonction();
+         Fonction GetFonctionById(int fonctionId);
+         bool FonctionExitsById(int fonctionId);
+         bool FonctionExitsByName(string fonctionName);
+         bool UpdateFonction(Fonction fonction);
+         bool CreateFonction(Fonction fonction);
+         bool DeleteFonction(Fonction fonction);
         bool Save();
 
 

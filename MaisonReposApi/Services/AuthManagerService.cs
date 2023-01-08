@@ -17,6 +17,8 @@ namespace MaisonReposApi.Services
         private readonly IPersonnelService _personnelService;
         private readonly string _secretKey;
 
+
+        //Contructor
         public AuthManagerService(MyDbContext context, IPersonnelService personnelService, IConfiguration configuration)
         {
             _context = context;
@@ -57,8 +59,6 @@ namespace MaisonReposApi.Services
             return Save();
         }
 
-
-
         /// <summary>
         /// Permet d'enregistrer une Data dans la base de données,
         /// </summary>
@@ -85,6 +85,7 @@ namespace MaisonReposApi.Services
             }
         }
 
+
         /// <summary>
         /// Permet la vérification du mot de passe
         /// </summary>
@@ -92,8 +93,6 @@ namespace MaisonReposApi.Services
         /// <param name="passwordHash"></param>
         /// <param name="passwordSalt"></param>
         /// <returns>Boolean</returns>
-
-
         public bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
             using (var hmac = new HMACSHA512(passwordSalt))
@@ -104,12 +103,12 @@ namespace MaisonReposApi.Services
             }
         }
 
+
         /// <summary>
         /// Permet de génerer le token 
         /// </summary>
         /// <param name="personnel"></param>
-        /// <returns>String (token)</returns>
-      
+        /// <returns>String (token)</returns> 
         public string GenerateToken(Personnel personnel)
         {
             //Creation de la signiature du token
@@ -137,5 +136,16 @@ namespace MaisonReposApi.Services
 
             return tokenHandler.WriteToken(token);
         }
+
+        /// <summary>
+        /// Permet s'il existe déjà un matricule identique dans la Base de données 
+        /// </summary>
+        /// <param name="matricule"></param>
+        /// <returns>Boolean</returns>
+        public bool MatriculeExistsPersonnel(string matricule)
+        {
+            return _context.Personnels.Any(m => m.Matricule.ToUpper() == matricule.ToUpper());
+        }
+   
     }
 }

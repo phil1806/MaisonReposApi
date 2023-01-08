@@ -23,6 +23,8 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IFonctionService, FonctionService>();
 builder.Services.AddScoped<IAuthManagerService, AuthManagerService>();
 builder.Services.AddScoped<IPersonnelService, PersonnelService>();
+builder.Services.AddScoped<IResidantService, ResidantService>();
+builder.Services.AddScoped<IResidantSuiviService, ResidantSuiviService>();
 
 
 //Ici je fais appel à ma connectionString

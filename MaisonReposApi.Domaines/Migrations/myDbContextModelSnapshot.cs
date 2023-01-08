@@ -292,6 +292,9 @@ namespace MaisonReposApi.Domaines.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<DateTime>("DateInscription")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Matricule")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -303,17 +306,18 @@ namespace MaisonReposApi.Domaines.Migrations
                         .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Prenom")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<int>("residantId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Matricule")
-                        .IsUnique();
-
                     b.HasIndex("residantId");
+
+                    b.HasIndex(new[] { "Matricule" }, "key_unique_Matricule")
+                        .IsUnique();
 
                     b.ToTable("ResidantSuivis", (string)null);
                 });
@@ -486,7 +490,7 @@ namespace MaisonReposApi.Domaines.Migrations
                     b.Property<DateTime>("Horaire")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 1, 7, 11, 19, 15, 335, DateTimeKind.Local).AddTicks(4874));
+                        .HasDefaultValue(new DateTime(2023, 1, 8, 20, 14, 37, 821, DateTimeKind.Local).AddTicks(2023));
 
                     b.Property<int>("personnelCreatedId")
                         .HasColumnType("int");

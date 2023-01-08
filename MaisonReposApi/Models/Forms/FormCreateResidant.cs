@@ -1,9 +1,8 @@
-﻿using MaisonReposApi.Entities;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace MaisonReposApi.Models.Forms
 {
-    public class RegisterFormPersonnel
+    public class FormCreateResidant
     {
         [Required]
         [MaxLength(30)]
@@ -15,20 +14,13 @@ namespace MaisonReposApi.Models.Forms
         public string? Prenom { get; set; }
 
         [Required]
-        [EmailAddress]
-        [MaxLength(30)]
-        public string? Email { get; set; }
+        public DateTime DateNass { get; set; } = DateTime.Now;
 
         [Required]
-        [MaxLength(30)]
-        [MinLength(8)]
-        public string? password { get; set; }
+        public DateTime DateEntre { get; set; } = DateTime.Now;
+        public DateTime DateSortie { get; set; } = DateTime.Now;
 
         [Required]
         public bool? IsActive { get; set; } = true;
-
-        [Required]
-        public int fonctionId { get; set; }
-
     }
 }

@@ -60,16 +60,24 @@ namespace MaisonReposApi.Controllers
             newPerso.Email = registerFormPersonnel.Email;
             newPerso.PasswordHash = passwordHash;
             newPerso.PasswordSalt = passwordSalt;
-            newPerso.Matricule = registerFormPersonnel.Matricule;
             newPerso.IsActive = registerFormPersonnel.IsActive;
             newPerso.FonctionId = registerFormPersonnel.fonctionId;
 
+            //Je génère de façon aléatoire un matricule pour un personel (GuId + nom)
+            do
+            {
+               newPerso.Matricule = (Guid.NewGuid().ToString().Substring(0,5) + registerFormPersonnel.Nom.Substring(0, 3)).ToUpper();
+
+            } while (_authManagerService.MatriculeExistsPersonnel(newPerso.Matricule));
+
+            //J'execute un update et je teste s'il a bien fonctionné
             if (!_authManagerService.RegisterPersonnel(newPerso))
             {
                 ModelState.AddModelError("", "Something went wrong on server");
                 return StatusCode(500, ModelState);
 
             }
+
             return Ok("Successfully created ");
 
         }

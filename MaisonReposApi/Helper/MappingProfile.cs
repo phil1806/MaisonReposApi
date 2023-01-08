@@ -15,6 +15,18 @@ namespace MaisonReposApi.Helper
             CreateMap<Personnel, RegisterFormPersonnel>();
             CreateMap<RegisterFormPersonnel, Personnel>();
 
+            CreateMap<Personnel, PersonnelDto>();
+            CreateMap<PersonnelDto, Personnel>();
+
+            CreateMap<Residant, ResidantDto>();
+            CreateMap<ResidantDto, Residant>();
+
+            CreateMap<Residant, FormCreateResidant>();
+            CreateMap< FormCreateResidant, Residant>();
+
+            CreateMap<ResidantSuivi, ResidantSuiviDto>();
+            CreateMap<ResidantSuiviDto, ResidantSuivi>();
+
         }
     }
 }

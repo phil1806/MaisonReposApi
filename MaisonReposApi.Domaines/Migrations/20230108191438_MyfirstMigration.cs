@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MaisonReposApi.Domaines.Migrations
 {
-    public partial class MyFirstMigration : Migration
+    public partial class MyfirstMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -86,8 +86,9 @@ namespace MaisonReposApi.Domaines.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nom = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    Prenom = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Prenom = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
                     Matricule = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    DateInscription = table.Column<DateTime>(type: "datetime2", nullable: false),
                     residantId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -299,7 +300,7 @@ namespace MaisonReposApi.Domaines.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Horaire = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 1, 7, 11, 19, 15, 335, DateTimeKind.Local).AddTicks(4874)),
+                    Horaire = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 1, 8, 20, 14, 37, 821, DateTimeKind.Local).AddTicks(2023)),
                     DescTherapie = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false, defaultValue: "Contactez medecin."),
                     personnelCreatedId = table.Column<int>(type: "int", nullable: false),
                     CategorieDesSoinId = table.Column<int>(type: "int", nullable: false),
@@ -558,15 +559,15 @@ namespace MaisonReposApi.Domaines.Migrations
                 filter: "[Matricule] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ResidantSuivis_Matricule",
-                table: "ResidantSuivis",
-                column: "Matricule",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ResidantSuivis_residantId",
                 table: "ResidantSuivis",
                 column: "residantId");
+
+            migrationBuilder.CreateIndex(
+                name: "key_unique_Matricule",
+                table: "ResidantSuivis",
+                column: "Matricule",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ResidantSuiviTherapies_IdResidantSuivi",

@@ -5,11 +5,12 @@ namespace MaisonReposApi.Interfaces
 {
     public interface IAuthManagerService
     {
-        public bool RegisterPersonnel (Personnel personnel);
-        public String LoginPersonnel (LoginPersonnel loginPersonnel);
-        public void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt);
-        public bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt);
-        public  string GenerateToken(Personnel personnel);
-        public bool Save();
+         bool RegisterPersonnel (Personnel personnel);
+         String LoginPersonnel (LoginPersonnel loginPersonnel);
+         void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt);
+         bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt);
+         string GenerateToken(Personnel personnel);
+         bool MatriculeExistsPersonnel(string matricule);
+         bool Save();
     }
 }

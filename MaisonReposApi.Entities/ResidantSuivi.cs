@@ -12,6 +12,7 @@ namespace MaisonReposApi.Entities
         public string? Nom { get; set; }
         public string? Prenom { get; set; }
         public string? Matricule { get; set; }
+        public DateTime DateInscription { get; set; } = DateTime.Now;
         public int residantId { get; set; } // Foreign Key 
 
         public  ICollection<residantSuiviTherapie>? ResidantSuiviTherapies { get; set; } = new List<residantSuiviTherapie>();

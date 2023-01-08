@@ -20,7 +20,11 @@ namespace MaisonReposApi.Domaines.Configurations.DbsetConfigurations
            .IsRequired()
            .HasMaxLength(30);
 
-            builder.HasIndex(rs => rs.Matricule)
+
+            builder.Property(rs => rs.Prenom)
+           .HasMaxLength(30);
+
+            builder.HasIndex(rs => rs.Matricule,"key_unique_Matricule")
            .IsUnique();
 
             builder.Property(rs => rs.Matricule)
