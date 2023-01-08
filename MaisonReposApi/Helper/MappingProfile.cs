@@ -27,6 +27,9 @@ namespace MaisonReposApi.Helper
             CreateMap<ResidantSuivi, ResidantSuiviDto>();
             CreateMap<ResidantSuiviDto, ResidantSuivi>();
 
+            CreateMap<CategorieDesSoin, CategorieDesSoinsDto>();
+            CreateMap< CategorieDesSoinsDto, CategorieDesSoin>();
+
         }
     }
 }
