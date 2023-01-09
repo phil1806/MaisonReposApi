@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MaisonReposApi.Domaines.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20230108191438_MyfirstMigration")]
-    partial class MyfirstMigration
+    [Migration("20230109101851_MyFirstMigration")]
+    partial class MyFirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -424,6 +424,9 @@ namespace MaisonReposApi.Domaines.Migrations
                     b.Property<int>("PersonnelCreatedId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Titre")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategorieDesSoinsId");
@@ -492,7 +495,7 @@ namespace MaisonReposApi.Domaines.Migrations
                     b.Property<DateTime>("Horaire")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 1, 8, 20, 14, 37, 821, DateTimeKind.Local).AddTicks(2023));
+                        .HasDefaultValue(new DateTime(2023, 1, 9, 11, 18, 51, 58, DateTimeKind.Local).AddTicks(4836));
 
                     b.Property<int>("personnelCreatedId")
                         .HasColumnType("int");

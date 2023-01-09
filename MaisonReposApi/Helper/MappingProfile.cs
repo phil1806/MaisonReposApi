@@ -30,6 +30,13 @@ namespace MaisonReposApi.Helper
             CreateMap<CategorieDesSoin, CategorieDesSoinsDto>();
             CreateMap< CategorieDesSoinsDto, CategorieDesSoin>();
 
+            CreateMap< SoinsAjout, SoinsAjoutDto>();
+            CreateMap<SoinsAjoutDto,SoinsAjout>();
+            CreateMap<FormAjoutSoins,SoinsAjout>();
+            CreateMap<SoinsAjout,FormAjoutSoins>();
+
+
+
         }
     }
 }

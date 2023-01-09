@@ -25,8 +25,8 @@ namespace MaisonReposApi.Controllers
         [ProducesResponseType(typeof(IEnumerable<CategorieDesSoin>),200)]
         public  IActionResult GetAllCategorieDesSoins()
         {
-
-            return Ok(_mapper.Map<List<CategorieDesSoinsDto>>(_categorieDesSoinsService.GetAllCategorieDesSoins()));
+            IEnumerable<CategorieDesSoinsDto> listeCategorieSoins = _mapper.Map<List<CategorieDesSoinsDto>>(_categorieDesSoinsService.GetAllCategorieDesSoins());
+            return Ok(listeCategorieSoins);
         }
 
 
@@ -49,21 +49,27 @@ namespace MaisonReposApi.Controllers
         public IActionResult CreateCategorieDesSoins([FromBody] CategorieDesSoinsDto createCategorie)
         {
             //Verifie que le formulaire n'est pas vide
-            if (createCategorie is null) 
+            if (createCategorie is null)
+            {
                 return BadRequest("Formulaire vide...");
+
+            }
 
             //verifie la validité du formulaire
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             //Je recupère une categorie si elle existe dans la Db
-            var categorie = _categorieDesSoinsService.GetAllCategorieDesSoins().Where(c => c.CategorieSoin.Trim().ToUpper() == createCategorie.CategorieSoin.Trim().ToUpper());
+            var categorie = _categorieDesSoinsService.GetAllCategorieDesSoins().Where(c => c.CategorieSoin.Trim().ToUpper() == createCategorie.CategorieSoin.Trim().ToUpper()).FirstOrDefault();
 
             //Je verifie si la categorie est null
-            if (categorie != null) 
-                return BadRequest("Categorie existe déjà !");
-
-            CategorieDesSoin categorieDesSoinMap = _mapper.Map<CategorieDesSoin>(createCategorie);
+            if (categorie != null)
+            {
+                ModelState.AddModelError("", "Category already Exists");
+                return StatusCode(422, ModelState);
+            }
+                
+            var categorieDesSoinMap = _mapper.Map<CategorieDesSoin>(createCategorie);
 
             categorieDesSoinMap.CategorieSoin = createCategorie.CategorieSoin;
 

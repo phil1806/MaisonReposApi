@@ -77,6 +77,16 @@ namespace MaisonReposApi.Services
             return _context.ResidantSuivis.Any(r => r.Id == Id);
         }
 
+        /// <summary>
+        /// Permet deverifier si le résidant existe déjà la liste des residant suivi
+        /// </summary>
+        /// <param name="matricule"></param>
+        /// <returns></returns>
+        public bool ResidantSuiviExistByMatricule(string matricule)
+        {
+            return _context.ResidantSuivis.Any(rs => rs.Matricule.ToUpper() == matricule.ToUpper());
+        }
+
 
         /// <summary>
         /// Permet de save les données dans la Db

@@ -27,7 +27,7 @@ namespace MaisonReposApi.Controllers
         public IActionResult GetAllResidantSuivis()
         {
             //Je recupère la liste des residant inscrit dans la liste des résidants suivis
-            IEnumerable<ResidantSuiviDto> residantSuiviMap = _mapper.Map<List<ResidantSuiviDto>>(_residantSuiviService.GetAllResidantSuivis());
+            IEnumerable<ResidantSuiviDto> residantSuiviMap = _mapper.Map<IEnumerable<ResidantSuiviDto>>(_residantSuiviService.GetAllResidantSuivis());
             return Ok(residantSuiviMap);
         }
 
@@ -53,6 +53,13 @@ namespace MaisonReposApi.Controllers
 
             //Je recupère le residant
             Residant residant = _residantService.GetResidantById(residantId);
+
+            //Verifie que il existe dans la liste (residants suivis)
+            if(_residantSuiviService.ResidantSuiviExistByMatricule(residant.Matricule))
+            {
+                ModelState.AddModelError(String.Empty,"Residant existe déjà dans la liste");
+                return BadRequest(ModelState);
+            }
 
             //Je charge les données récuperés 
             ResidantSuivi newResidantSuivi = new ResidantSuivi();

@@ -26,6 +26,7 @@ builder.Services.AddScoped<IPersonnelService, PersonnelService>();
 builder.Services.AddScoped<IResidantService, ResidantService>();
 builder.Services.AddScoped<IResidantSuiviService, ResidantSuiviService>();
 builder.Services.AddScoped<ICategorieDesSoinsService, CategorieDesSoinService>();
+builder.Services.AddScoped<ISoinsAjoutService, SoinsAjoutService>();
 
 
 //Ici je fais appel à ma connectionString

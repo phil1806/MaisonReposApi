@@ -26,7 +26,7 @@ namespace MaisonReposApi.Controllers
         [ProducesResponseType(typeof(IEnumerable<Residant>), 200)]
         public IActionResult GetAllResidants()
         {
-            IEnumerable<ResidantDto> residants = _mapper.Map<List<ResidantDto>>(_residantService.GetAllResidants());
+            IEnumerable<ResidantDto> residants = _mapper.Map<IEnumerable<ResidantDto>>(_residantService.GetAllResidants());
             return Ok(residants);
         }
 
@@ -55,13 +55,24 @@ namespace MaisonReposApi.Controllers
             // La validité du formulaire
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            //On génere un matricule 
+            //On génere un matricule et je verifie si un residant existe déjà avec le même Matricule
             string? matriculeGenerer = "";
             do
             {
                 matriculeGenerer = (Guid.NewGuid().ToString().Substring(0, 5) + formCreateResidant.Nom.Substring(0, 3)).ToUpper();
 
             } while (_residantService.ResidantExistByMatricule(matriculeGenerer));
+
+            //Verifier que le residant n'existe pas avec le même Nom, Prenom, DateNaiss (une securité en plus)
+            var residantGetSameName = _residantService.GetAllResidants().Where(r => r.Nom.Trim().ToLower() == formCreateResidant.Nom.Trim().ToLower()).FirstOrDefault();
+            var residantGetSamePrenom = _residantService.GetAllResidants().Where(r => r.Prenom.Trim().ToLower() == formCreateResidant.Prenom.Trim().ToLower()).FirstOrDefault();
+            var residantGetsameDateNaiss = _residantService.GetAllResidants().Where(r => r.DateNass.ToString("dd/MM/yyyy") == formCreateResidant.DateNass.ToString("dd/MM/yyyy")).FirstOrDefault();
+
+            if((residantGetsameDateNaiss != null)&&(residantGetSameName != null)&&(residantGetSamePrenom != null))
+            {
+                ModelState.AddModelError("", "Residant already exist !");
+                return BadRequest(ModelState);
+            }
 
 
             Residant residant = _mapper.Map<Residant>(formCreateResidant);
@@ -75,7 +86,7 @@ namespace MaisonReposApi.Controllers
             residant.DateSortie = formCreateResidant.DateSortie;
             residant.IsActive = formCreateResidant.IsActive;
 
-            Console.WriteLine(residant);
+         
 
             //J'execute un update et je teste s'il a bien fonctionné
             if (!_residantService.CreateResidant(residant))
