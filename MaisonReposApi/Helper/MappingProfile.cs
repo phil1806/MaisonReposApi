@@ -9,31 +9,24 @@ namespace MaisonReposApi.Helper
     {
         public MappingProfile()
         {
-            CreateMap<Fonction , FonctionDto>();
-            CreateMap<FonctionDto, Fonction>();
+            CreateMap<Fonction, FonctionDto>().ReverseMap() ;
+            CreateMap<Personnel, RegisterFormPersonnel>().ReverseMap();
 
-            CreateMap<Personnel, RegisterFormPersonnel>();
-            CreateMap<RegisterFormPersonnel, Personnel>();
+            CreateMap<Personnel, PersonnelDto>().ReverseMap();
 
-            CreateMap<Personnel, PersonnelDto>();
-            CreateMap<PersonnelDto, Personnel>();
+            CreateMap<Residant, ResidantDto>().ReverseMap();
 
-            CreateMap<Residant, ResidantDto>();
-            CreateMap<ResidantDto, Residant>();
+            CreateMap<Residant, FormCreateResidant>().ReverseMap();
 
-            CreateMap<Residant, FormCreateResidant>();
-            CreateMap< FormCreateResidant, Residant>();
+            CreateMap<ResidantSuivi, ResidantSuiviDto>().ReverseMap();
 
-            CreateMap<ResidantSuivi, ResidantSuiviDto>();
-            CreateMap<ResidantSuiviDto, ResidantSuivi>();
+            CreateMap<CategorieDesSoin, CategorieDesSoinsDto>().ReverseMap();
 
-            CreateMap<CategorieDesSoin, CategorieDesSoinsDto>();
-            CreateMap< CategorieDesSoinsDto, CategorieDesSoin>();
+            CreateMap< SoinsAjout, SoinsAjoutDto>().ReverseMap();
 
-            CreateMap< SoinsAjout, SoinsAjoutDto>();
-            CreateMap<SoinsAjoutDto,SoinsAjout>();
-            CreateMap<FormAjoutSoins,SoinsAjout>();
-            CreateMap<SoinsAjout,FormAjoutSoins>();
+            CreateMap<FormAjoutSoins,SoinsAjout>().ReverseMap();
+
+            CreateMap<Parametre,ParametreDto>().ReverseMap();
 
 
 

@@ -19,6 +19,11 @@ namespace MaisonReposApi.Entities
         public int CategorieDesSoinId { get; set; }
         public int residantSuiviId { get; set; }
 
+        //Proprité de navigation
+        public Personnel? personnel { get; set; }
+      
+        public ResidantSuivi? residantSuivi { get; set; }
+
 
     }
 }

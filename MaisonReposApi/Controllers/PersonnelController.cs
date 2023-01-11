@@ -88,7 +88,7 @@ namespace MaisonReposApi.Controllers
             if (persoId != updatePersonnel.Id) return BadRequest(ModelState);
 
             //teste si le menbre du personnel en question existe
-            if (!_personnelService.PersonnelExistById(persoId)) return NotFound();
+            if (!_personnelService.PersonnelExistById(persoId)) return NotFound("Personnel noon existant !");
 
             //Je fais un mapping
             Personnel persoMap = _mapper.Map<Personnel>(updatePersonnel);
