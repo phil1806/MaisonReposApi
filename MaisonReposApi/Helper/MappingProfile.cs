@@ -28,6 +28,9 @@ namespace MaisonReposApi.Helper
 
             CreateMap<Parametre,ParametreDto>().ReverseMap();
 
+            CreateMap<TrancheHoireDto,TrancheHoraire>().ReverseMap();
+
+
 
 
         }

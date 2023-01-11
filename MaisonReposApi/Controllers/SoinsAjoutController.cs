@@ -32,7 +32,7 @@ namespace MaisonReposApi.Controllers
             return Ok(listeDesSoinAjouter);
         }
 
-        [HttpGet("soinId")]
+        [HttpGet("{soinId}")]
         [ProducesResponseType(typeof( SoinsAjout), 200)]
         public IActionResult GetSoinsAjoutById(int soinsId)
         {
@@ -92,7 +92,7 @@ namespace MaisonReposApi.Controllers
             return Ok("Succefully created !");
         }
 
-        [HttpDelete("soinsId")]
+        [HttpDelete("{soinsId}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
         [ProducesResponseType(400)]
@@ -111,7 +111,7 @@ namespace MaisonReposApi.Controllers
             return Ok("Succefully Deleted !");
         }
 
-        [HttpPut("soinsId")]
+        [HttpPut("{soinsId}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
         [ProducesResponseType(400)]

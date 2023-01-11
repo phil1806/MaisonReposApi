@@ -43,9 +43,6 @@ namespace MaisonReposApi.Controllers
             //Je recupère la fonction si elle existe vrmaiment et je mappe la Data
             var laFonction = _mapper.Map<FonctionDto>(_fonctionService.GetFonctionById(fonctionId));
 
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             return Ok(laFonction); 
         }
 
@@ -89,7 +86,7 @@ namespace MaisonReposApi.Controllers
 
         }
 
-        [HttpDelete("fonctionId")]
+        [HttpDelete("{fonctionId}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
         [ProducesResponseType(400)]
@@ -113,7 +110,7 @@ namespace MaisonReposApi.Controllers
         }
 
 
-        [HttpPut("fonctionId")]
+        [HttpPut("{fonctionId}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
         [ProducesResponseType(400)]

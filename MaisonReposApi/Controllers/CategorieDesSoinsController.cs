@@ -30,7 +30,7 @@ namespace MaisonReposApi.Controllers
         }
 
 
-        [HttpGet("categorieId")]
+        [HttpGet("{categorieId}")]
         [ProducesResponseType(typeof(CategorieDesSoin), 200)]
         public  IActionResult GetCategorieDesSoinsById(int categorieId)
         {
@@ -84,7 +84,7 @@ namespace MaisonReposApi.Controllers
         }
 
 
-        [HttpDelete("categorieId")]
+        [HttpDelete("{categorieId}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
         [ProducesResponseType(400)]

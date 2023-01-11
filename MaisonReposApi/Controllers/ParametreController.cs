@@ -70,7 +70,7 @@ namespace MaisonReposApi.Controllers
 
         }
 
-        [HttpPut("paramId")]
+        [HttpPut("{paramId}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
         [ProducesResponseType(400)]
@@ -104,7 +104,7 @@ namespace MaisonReposApi.Controllers
         }
 
 
-        [HttpDelete("paramId")]
+        [HttpDelete("{paramId}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
         [ProducesResponseType(400)]

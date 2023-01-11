@@ -1,6 +1,8 @@
 using AutoMapper;
 using MaisonReposApi.Domaines.DataContext;
+using MaisonReposApi.Entities;
 using MaisonReposApi.Interfaces;
+using MaisonReposApi.Interfaces.GeneriqueInterface;
 using MaisonReposApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +30,7 @@ builder.Services.AddScoped<IResidantSuiviService, ResidantSuiviService>();
 builder.Services.AddScoped<ICategorieDesSoinsService, CategorieDesSoinService>();
 builder.Services.AddScoped<ISoinsAjoutService, SoinsAjoutService>();
 builder.Services.AddScoped<IParametreService, ParametreService>();
+builder.Services.AddScoped<IBaseInterfaceService<TrancheHoraire>, TrancheHoraireService>();
 
 
 //Ici je fais appel à ma connectionString
