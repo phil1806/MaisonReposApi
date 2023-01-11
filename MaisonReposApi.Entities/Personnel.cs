@@ -21,8 +21,8 @@ namespace MaisonReposApi.Entities
        
         public virtual ICollection<Boisson>? Boissons { get; set; } = new List<Boisson>();
         public virtual ICollection<Selle>? Selles { get; set; } = new List<Selle>();
+        public virtual ICollection<Toillette>? Toillette { get; set; } = new List<Toillette>();
         public virtual ICollection<Repas>? Repas { get; set; } = new List<Repas>();
-        public virtual ICollection<Toillette>? Toillettes { get; set; } = new List<Toillette>();
         public virtual ICollection<Parametre>? Parametres { get; set; } = new List<Parametre>();
         public virtual ICollection<Therapie>? therapies { get; set; } = new List<Therapie>();
         public virtual ICollection<TrancheHoraire>? trancheHoraires { get; set; } = new List<TrancheHoraire>();

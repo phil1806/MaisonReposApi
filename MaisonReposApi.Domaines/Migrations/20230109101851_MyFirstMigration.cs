@@ -225,34 +225,34 @@ namespace MaisonReposApi.Domaines.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Repas",
+                name: "Toillette",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    QteRepas = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: "Normal"),
-                    DescRepas = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    QteToillette = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: "Normal"),
+                    DescToillette = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     personnelId = table.Column<int>(type: "int", nullable: false),
                     CategorieDesSoinId = table.Column<int>(type: "int", nullable: false),
                     residantSuiviId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Repas", x => x.Id);
+                    table.PrimaryKey("PK_Toillette", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Repas_CategorieDesSoins_CategorieDesSoinId",
+                        name: "FK_Toillette_CategorieDesSoins_CategorieDesSoinId",
                         column: x => x.CategorieDesSoinId,
                         principalTable: "CategorieDesSoins",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Repas_Personnels_personnelId",
+                        name: "FK_Toillette_Personnels_personnelId",
                         column: x => x.personnelId,
                         principalTable: "Personnels",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Repas_ResidantSuivis_residantSuiviId",
+                        name: "FK_Toillette_ResidantSuivis_residantSuiviId",
                         column: x => x.residantSuiviId,
                         principalTable: "ResidantSuivis",
                         principalColumn: "Id",
@@ -538,18 +538,18 @@ namespace MaisonReposApi.Domaines.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Repas_CategorieDesSoinId",
-                table: "Repas",
+                name: "IX_Toillette_CategorieDesSoinId",
+                table: "Toillette",
                 column: "CategorieDesSoinId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Repas_personnelId",
-                table: "Repas",
+                name: "IX_Toillette_personnelId",
+                table: "Toillette",
                 column: "personnelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Repas_residantSuiviId",
-                table: "Repas",
+                name: "IX_Toillette_residantSuiviId",
+                table: "Toillette",
                 column: "residantSuiviId");
 
             migrationBuilder.CreateIndex(
@@ -705,7 +705,7 @@ namespace MaisonReposApi.Domaines.Migrations
                 name: "Parametres");
 
             migrationBuilder.DropTable(
-                name: "Repas");
+                name: "Toillette");
 
             migrationBuilder.DropTable(
                 name: "ResidantSuiviTherapies");
