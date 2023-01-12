@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MaisonReposApi.Domaines.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20230111133549_MyFirstMigration")]
-    partial class MyFirstMigration
+    [Migration("20230112095226_myFirstMigration")]
+    partial class myFirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -496,7 +496,7 @@ namespace MaisonReposApi.Domaines.Migrations
                     b.Property<DateTime>("Horaire")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 1, 11, 14, 35, 49, 30, DateTimeKind.Local).AddTicks(1961));
+                        .HasDefaultValue(new DateTime(2023, 1, 12, 10, 52, 25, 939, DateTimeKind.Local).AddTicks(2080));
 
                     b.Property<int>("personnelCreatedId")
                         .HasColumnType("int");

@@ -18,6 +18,5 @@ namespace MaisonReposApi.Entities
         public int CategorieDesSoinId { get; set; }
         public int residantSuiviId { get; set; }
 
-
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MaisonReposApi.Domaines.Migrations
 {
-    public partial class MyFirstMigration : Migration
+    public partial class myFirstMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -302,7 +302,7 @@ namespace MaisonReposApi.Domaines.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Horaire = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 1, 11, 14, 35, 49, 30, DateTimeKind.Local).AddTicks(1961)),
+                    Horaire = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 1, 12, 10, 52, 25, 939, DateTimeKind.Local).AddTicks(2080)),
                     DescTherapie = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false, defaultValue: "Contactez medecin."),
                     personnelCreatedId = table.Column<int>(type: "int", nullable: false),
                     CategorieDesSoinId = table.Column<int>(type: "int", nullable: false),
