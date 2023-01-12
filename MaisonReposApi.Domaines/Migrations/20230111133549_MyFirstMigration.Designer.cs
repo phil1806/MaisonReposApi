@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MaisonReposApi.Domaines.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20230109101851_MyFirstMigration")]
+    [Migration("20230111133549_MyFirstMigration")]
     partial class MyFirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -182,11 +182,9 @@ namespace MaisonReposApi.Domaines.Migrations
                         .HasColumnType("nvarchar(30)");
 
                     b.Property<byte[]>("PasswordHash")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<byte[]>("PasswordSalt")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Prenom")
@@ -215,6 +213,9 @@ namespace MaisonReposApi.Domaines.Migrations
 
                     b.Property<int>("CategorieDesSoinId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("DateTimeRepas")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("DescRepas")
                         .HasColumnType("nvarchar(max)");
@@ -495,7 +496,7 @@ namespace MaisonReposApi.Domaines.Migrations
                     b.Property<DateTime>("Horaire")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 1, 9, 11, 18, 51, 58, DateTimeKind.Local).AddTicks(4836));
+                        .HasDefaultValue(new DateTime(2023, 1, 11, 14, 35, 49, 30, DateTimeKind.Local).AddTicks(1961));
 
                     b.Property<int>("personnelCreatedId")
                         .HasColumnType("int");
@@ -628,17 +629,21 @@ namespace MaisonReposApi.Domaines.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MaisonReposApi.Entities.Personnel", null)
+                    b.HasOne("MaisonReposApi.Entities.Personnel", "personnel")
                         .WithMany("Parametres")
                         .HasForeignKey("personnelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MaisonReposApi.Entities.ResidantSuivi", null)
+                    b.HasOne("MaisonReposApi.Entities.ResidantSuivi", "residantSuivi")
                         .WithMany("Parametres")
                         .HasForeignKey("residantSuiviId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("personnel");
+
+                    b.Navigation("residantSuivi");
                 });
 
             modelBuilder.Entity("MaisonReposApi.Entities.Personnel", b =>
@@ -837,7 +842,7 @@ namespace MaisonReposApi.Domaines.Migrations
                         .IsRequired();
 
                     b.HasOne("MaisonReposApi.Entities.Personnel", null)
-                        .WithMany("Toillettes")
+                        .WithMany("Toillette")
                         .HasForeignKey("personnelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -894,7 +899,7 @@ namespace MaisonReposApi.Domaines.Migrations
 
                     b.Navigation("SoinsAjouts");
 
-                    b.Navigation("Toillettes");
+                    b.Navigation("Toillette");
 
                     b.Navigation("residantSuiviTherapies");
 

@@ -11,7 +11,7 @@ namespace MaisonReposApi.Entities
         public int Id { get; set; }
         public string?  QteRepas { get; set; }
         public string? DescRepas { get; set; }
-        DateTime DateTimeRepas { get; set; } = DateTime.Now;
+        public DateTime? DateTimeRepas { get; set; }
 
         //Liste des foreign key
         public int personnelId { get; set; }

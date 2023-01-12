@@ -33,11 +33,6 @@ namespace MaisonReposApi.Domaines.Configurations.DbsetConfigurations
            .IsRequired()
            .HasMaxLength(30);
 
-            builder.Property(p => p.PasswordHash)
-            .IsRequired();
-
-            builder.Property(p => p.PasswordSalt)
-           .IsRequired();
 
             builder.Property(p => p.IsActive)
             .HasDefaultValue(true)

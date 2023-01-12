@@ -64,8 +64,8 @@ namespace MaisonReposApi.Domaines.Migrations
                     Prenom = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Matricule = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     FonctionId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -225,34 +225,35 @@ namespace MaisonReposApi.Domaines.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Toillette",
+                name: "Repas",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    QteToillette = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: "Normal"),
-                    DescToillette = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    QteRepas = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: "Normal"),
+                    DescRepas = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateTimeRepas = table.Column<DateTime>(type: "datetime2", nullable: true),
                     personnelId = table.Column<int>(type: "int", nullable: false),
                     CategorieDesSoinId = table.Column<int>(type: "int", nullable: false),
                     residantSuiviId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Toillette", x => x.Id);
+                    table.PrimaryKey("PK_Repas", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Toillette_CategorieDesSoins_CategorieDesSoinId",
+                        name: "FK_Repas_CategorieDesSoins_CategorieDesSoinId",
                         column: x => x.CategorieDesSoinId,
                         principalTable: "CategorieDesSoins",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Toillette_Personnels_personnelId",
+                        name: "FK_Repas_Personnels_personnelId",
                         column: x => x.personnelId,
                         principalTable: "Personnels",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Toillette_ResidantSuivis_residantSuiviId",
+                        name: "FK_Repas_ResidantSuivis_residantSuiviId",
                         column: x => x.residantSuiviId,
                         principalTable: "ResidantSuivis",
                         principalColumn: "Id",
@@ -301,7 +302,7 @@ namespace MaisonReposApi.Domaines.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Horaire = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 1, 9, 11, 18, 51, 58, DateTimeKind.Local).AddTicks(4836)),
+                    Horaire = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 1, 11, 14, 35, 49, 30, DateTimeKind.Local).AddTicks(1961)),
                     DescTherapie = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false, defaultValue: "Contactez medecin."),
                     personnelCreatedId = table.Column<int>(type: "int", nullable: false),
                     CategorieDesSoinId = table.Column<int>(type: "int", nullable: false),
@@ -538,18 +539,18 @@ namespace MaisonReposApi.Domaines.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Toillette_CategorieDesSoinId",
-                table: "Toillette",
+                name: "IX_Repas_CategorieDesSoinId",
+                table: "Repas",
                 column: "CategorieDesSoinId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Toillette_personnelId",
-                table: "Toillette",
+                name: "IX_Repas_personnelId",
+                table: "Repas",
                 column: "personnelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Toillette_residantSuiviId",
-                table: "Toillette",
+                name: "IX_Repas_residantSuiviId",
+                table: "Repas",
                 column: "residantSuiviId");
 
             migrationBuilder.CreateIndex(
@@ -705,7 +706,7 @@ namespace MaisonReposApi.Domaines.Migrations
                 name: "Parametres");
 
             migrationBuilder.DropTable(
-                name: "Toillette");
+                name: "Repas");
 
             migrationBuilder.DropTable(
                 name: "ResidantSuiviTherapies");

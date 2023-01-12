@@ -22,7 +22,7 @@ namespace MaisonReposApi.Models.Forms
         [Required]
         [MaxLength(30)]
         [MinLength(8)]
-        public string? password { get; set; }
+        public string? password { get; set; } = "test1234";
 
         [Required]
         public bool? IsActive { get; set; } = true;
