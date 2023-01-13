@@ -15,6 +15,7 @@ namespace MaisonReposApi.Models.Dtos
         public string? Prenom {get; set; }
         [Required]
         [MaxLength(30)]
+        [EmailAddress]
         public string? Email { get; set; }
 
         public string? Matricule { get; set; }

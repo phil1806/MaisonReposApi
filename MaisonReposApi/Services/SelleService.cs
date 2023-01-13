@@ -36,7 +36,7 @@ namespace MaisonReposApi.Services
 
         public Selle GetElementById(int id)
         { 
-            return _context.Selles.Where(s=>id == id).FirstOrDefault();
+            return _context.Selles.Where(s=>s.Id == id).FirstOrDefault();
         }
 
         public bool Save()

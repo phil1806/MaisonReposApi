@@ -30,13 +30,14 @@ namespace MaisonReposApi.Controllers
         [ProducesResponseType(typeof(Selle), 200)]
         public IActionResult GetSelleById(int selleId)
         {
+            if (!_baseInterfaceService.ElementExists(selleId)) return BadRequest("Elements don't exists");
             return Ok(_baseInterfaceService.GetElementById(selleId));
         }
 
         [HttpPost]
         public IActionResult CreateSelle(Selle createSelle)
         {
-            if (createSelle is null) return BadRequest("Formulaire vide !");
+            if (createSelle is null) return BadRequest("Empty form !");
              
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -52,8 +53,12 @@ namespace MaisonReposApi.Controllers
         [HttpPut("{selleId}")]
         public IActionResult UpdateSelle(int selleId, Selle updateSelle )
         {
-            if (selleId != updateSelle.Id) return BadRequest("Id ne sont apas identique");
+            if (!_baseInterfaceService.ElementExists(selleId)) return BadRequest("element don't exits");
+
+            if (selleId != updateSelle.Id) return BadRequest("Id ne sont pas identiques");
+
             if (updateSelle is null) return BadRequest("Formulaire vide !");
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -61,19 +66,28 @@ namespace MaisonReposApi.Controllers
 
             if (!_baseInterfaceService.UpdateElement(updateSelle))
             {
-                ModelState.AddModelError(string.Empty, "Something went wrong on  serve");
+                ModelState.AddModelError(string.Empty, "Something went wrong on  server");
                 return BadRequest(ModelState);
             }
-            return Ok("Succesfully updated");
+
+            return Ok("Successfully updated");
 
         }
 
         [HttpDelete("{selleId}")]
         public IActionResult DeleteSelle(int selleId)
         {
-            if (!_baseInterfaceService.ElementExists(selleId)) return BadRequest("don't exits");
+            if (!_baseInterfaceService.ElementExists(selleId)) return BadRequest("Element don't exits");
+
             var elementToDelte = _baseInterfaceService.GetElementById(selleId);
-            return Ok(_baseInterfaceService.DeleteElement(elementToDelte));
+
+            if (!_baseInterfaceService.DeleteElement(elementToDelte))
+            {
+                ModelState.AddModelError(string.Empty, "Something went wrong on  server");
+                return BadRequest(ModelState);
+            }
+
+            return Ok("Succesfully Deleted");
         }
     }
 }

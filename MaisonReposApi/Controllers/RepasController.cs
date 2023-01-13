@@ -30,7 +30,7 @@ namespace MaisonReposApi.Controllers
         [ProducesResponseType(typeof(Repas), 200)]
         public IActionResult GetToilletteById(int RepasId)
         {
-            if (!_baseInterfaceService.ElementExists(RepasId)) return NotFound("not exists !");
+            if (!_baseInterfaceService.ElementExists(RepasId)) return NotFound("Element don't exists !");
             return Ok(_baseInterfaceService.GetElementById(RepasId));
         }
 
@@ -45,7 +45,7 @@ namespace MaisonReposApi.Controllers
             {
                 return BadRequest("Something went wrong on server !");
             }
-            return Ok("create successfully !");
+            return Ok(" successfully  created !");
         }
 
         [HttpPut("{RepasId}")]
@@ -87,7 +87,7 @@ namespace MaisonReposApi.Controllers
                 ModelState.AddModelError("", "something went wrong on server !");
                 return BadRequest(ModelState);
             }
-            return Ok("Succefully Deleting !");
+            return Ok("Successfully Deleted !");
         }
 
 
