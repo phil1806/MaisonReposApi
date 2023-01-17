@@ -12,7 +12,7 @@ namespace MaisonReposApi.Entities
         public int IdResidantSuivi { get; set; }
         public int IdTherapie { get; set; }
         public int PersonnelDoneId { get; set; } //Foreign key
-        public ResidantSuivi? residant { get; set; }  
+        public ResidantSuivi? residantSuivi { get; set; }  
         public Therapie? therapie { get; set; }    
       
     }

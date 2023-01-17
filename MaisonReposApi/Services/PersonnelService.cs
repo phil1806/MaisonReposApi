@@ -77,7 +77,22 @@ namespace MaisonReposApi.Services
         /// <returns>Boolean</returns>
         public bool UpdatePerrsonnel(Personnel personnel)
         {
-            _context.Update(personnel);
+            var personneToUpdate = GetPersonnelById(personnel.Id); //Je recupère le personnel à update
+
+            personneToUpdate.Nom = personnel.Nom;
+            personneToUpdate.Prenom = personnel.Prenom;
+            personneToUpdate.Matricule = personnel.Matricule;
+            personneToUpdate.Email = personnel.Email;
+            personneToUpdate.PasswordSalt = personneToUpdate.PasswordSalt;
+            personneToUpdate.PasswordHash = personneToUpdate.PasswordHash;
+            personneToUpdate.IsActive = personnel.IsActive;
+            personneToUpdate.FonctionId = personnel.FonctionId;
+
+            if(personneToUpdate != null)
+            {
+                _context.Update(personneToUpdate);
+      
+            }
             return Save();
         }
 

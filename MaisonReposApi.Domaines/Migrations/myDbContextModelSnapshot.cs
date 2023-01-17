@@ -340,12 +340,6 @@ namespace MaisonReposApi.Domaines.Migrations
                     b.Property<int>("PersonnelDoneId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("residantId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("therapieId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("IdResidantSuivi");
@@ -353,10 +347,6 @@ namespace MaisonReposApi.Domaines.Migrations
                     b.HasIndex("IdTherapie");
 
                     b.HasIndex("PersonnelDoneId");
-
-                    b.HasIndex("residantId");
-
-                    b.HasIndex("therapieId");
 
                     b.ToTable("ResidantSuiviTherapies", (string)null);
                 });
@@ -494,7 +484,7 @@ namespace MaisonReposApi.Domaines.Migrations
                     b.Property<DateTime>("Horaire")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 1, 12, 10, 52, 25, 939, DateTimeKind.Local).AddTicks(2080));
+                        .HasDefaultValue(new DateTime(2023, 1, 16, 13, 11, 56, 790, DateTimeKind.Local).AddTicks(4552));
 
                     b.Property<int>("personnelCreatedId")
                         .HasColumnType("int");
@@ -521,19 +511,9 @@ namespace MaisonReposApi.Domaines.Migrations
                     b.Property<int>("IdTrancheHoraire")
                         .HasColumnType("int");
 
-                    b.Property<int?>("therapieId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("trancheHoraireId")
-                        .HasColumnType("int");
-
                     b.HasKey("IdTherapie", "IdTrancheHoraire");
 
                     b.HasIndex("IdTrancheHoraire");
-
-                    b.HasIndex("therapieId");
-
-                    b.HasIndex("trancheHoraireId");
 
                     b.ToTable("TherapieTrancheHoraires", (string)null);
                 });
@@ -683,13 +663,13 @@ namespace MaisonReposApi.Domaines.Migrations
 
             modelBuilder.Entity("MaisonReposApi.Entities.residantSuiviTherapie", b =>
                 {
-                    b.HasOne("MaisonReposApi.Entities.ResidantSuivi", null)
+                    b.HasOne("MaisonReposApi.Entities.ResidantSuivi", "residantSuivi")
                         .WithMany("ResidantSuiviTherapies")
                         .HasForeignKey("IdResidantSuivi")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("MaisonReposApi.Entities.Therapie", null)
+                    b.HasOne("MaisonReposApi.Entities.Therapie", "therapie")
                         .WithMany("ResidantSuiviTherapies")
                         .HasForeignKey("IdTherapie")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -701,15 +681,7 @@ namespace MaisonReposApi.Domaines.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("MaisonReposApi.Entities.ResidantSuivi", "residant")
-                        .WithMany()
-                        .HasForeignKey("residantId");
-
-                    b.HasOne("MaisonReposApi.Entities.Therapie", "therapie")
-                        .WithMany()
-                        .HasForeignKey("therapieId");
-
-                    b.Navigation("residant");
+                    b.Navigation("residantSuivi");
 
                     b.Navigation("therapie");
                 });
@@ -806,25 +778,17 @@ namespace MaisonReposApi.Domaines.Migrations
 
             modelBuilder.Entity("MaisonReposApi.Entities.TherapieTrancheHoraire", b =>
                 {
-                    b.HasOne("MaisonReposApi.Entities.Therapie", null)
+                    b.HasOne("MaisonReposApi.Entities.Therapie", "therapie")
                         .WithMany("TherapieTrancheHoraires")
                         .HasForeignKey("IdTherapie")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("MaisonReposApi.Entities.TrancheHoraire", null)
+                    b.HasOne("MaisonReposApi.Entities.TrancheHoraire", "trancheHoraire")
                         .WithMany("TherapieTrancheHoraires")
                         .HasForeignKey("IdTrancheHoraire")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
-
-                    b.HasOne("MaisonReposApi.Entities.Therapie", "therapie")
-                        .WithMany()
-                        .HasForeignKey("therapieId");
-
-                    b.HasOne("MaisonReposApi.Entities.TrancheHoraire", "trancheHoraire")
-                        .WithMany()
-                        .HasForeignKey("trancheHoraireId");
 
                     b.Navigation("therapie");
 

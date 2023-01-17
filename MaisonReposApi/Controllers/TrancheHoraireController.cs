@@ -44,7 +44,7 @@ namespace MaisonReposApi.Controllers
         [HttpDelete("{trancheId}")]
         public IActionResult DeleteTrancheHoiraire(int trancheId)
         {
-            if (_baseInterfaceService.ElementExists(trancheId)) return BadRequest("not exists !");
+            if (!_baseInterfaceService.ElementExists(trancheId)) return BadRequest("Element do not exists !");
 
             var elementToDelete = _baseInterfaceService.GetElementById(trancheId);
 

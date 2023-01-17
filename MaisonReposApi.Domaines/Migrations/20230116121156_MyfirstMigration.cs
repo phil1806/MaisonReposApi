@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MaisonReposApi.Domaines.Migrations
 {
-    public partial class myFirstMigration : Migration
+    public partial class MyfirstMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -302,7 +302,7 @@ namespace MaisonReposApi.Domaines.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Horaire = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 1, 12, 10, 52, 25, 939, DateTimeKind.Local).AddTicks(2080)),
+                    Horaire = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 1, 16, 13, 11, 56, 790, DateTimeKind.Local).AddTicks(4552)),
                     DescTherapie = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false, defaultValue: "Contactez medecin."),
                     personnelCreatedId = table.Column<int>(type: "int", nullable: false),
                     CategorieDesSoinId = table.Column<int>(type: "int", nullable: false),
@@ -417,9 +417,7 @@ namespace MaisonReposApi.Domaines.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IdResidantSuivi = table.Column<int>(type: "int", nullable: false),
                     IdTherapie = table.Column<int>(type: "int", nullable: false),
-                    PersonnelDoneId = table.Column<int>(type: "int", nullable: false),
-                    residantId = table.Column<int>(type: "int", nullable: true),
-                    therapieId = table.Column<int>(type: "int", nullable: true)
+                    PersonnelDoneId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -435,18 +433,8 @@ namespace MaisonReposApi.Domaines.Migrations
                         principalTable: "ResidantSuivis",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_ResidantSuiviTherapies_ResidantSuivis_residantId",
-                        column: x => x.residantId,
-                        principalTable: "ResidantSuivis",
-                        principalColumn: "Id");
-                    table.ForeignKey(
                         name: "FK_ResidantSuiviTherapies_Therapies_IdTherapie",
                         column: x => x.IdTherapie,
-                        principalTable: "Therapies",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_ResidantSuiviTherapies_Therapies_therapieId",
-                        column: x => x.therapieId,
                         principalTable: "Therapies",
                         principalColumn: "Id");
                 });
@@ -456,9 +444,7 @@ namespace MaisonReposApi.Domaines.Migrations
                 columns: table => new
                 {
                     IdTherapie = table.Column<int>(type: "int", nullable: false),
-                    IdTrancheHoraire = table.Column<int>(type: "int", nullable: false),
-                    therapieId = table.Column<int>(type: "int", nullable: true),
-                    trancheHoraireId = table.Column<int>(type: "int", nullable: true)
+                    IdTrancheHoraire = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -469,18 +455,8 @@ namespace MaisonReposApi.Domaines.Migrations
                         principalTable: "Therapies",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_TherapieTrancheHoraires_Therapies_therapieId",
-                        column: x => x.therapieId,
-                        principalTable: "Therapies",
-                        principalColumn: "Id");
-                    table.ForeignKey(
                         name: "FK_TherapieTrancheHoraires_TrancheHoraires_IdTrancheHoraire",
                         column: x => x.IdTrancheHoraire,
-                        principalTable: "TrancheHoraires",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_TherapieTrancheHoraires_TrancheHoraires_trancheHoraireId",
-                        column: x => x.trancheHoraireId,
                         principalTable: "TrancheHoraires",
                         principalColumn: "Id");
                 });
@@ -587,16 +563,6 @@ namespace MaisonReposApi.Domaines.Migrations
                 column: "PersonnelDoneId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ResidantSuiviTherapies_residantId",
-                table: "ResidantSuiviTherapies",
-                column: "residantId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ResidantSuiviTherapies_therapieId",
-                table: "ResidantSuiviTherapies",
-                column: "therapieId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Selles_CategorieDesSoinId",
                 table: "Selles",
                 column: "CategorieDesSoinId");
@@ -665,16 +631,6 @@ namespace MaisonReposApi.Domaines.Migrations
                 name: "IX_TherapieTrancheHoraires_IdTrancheHoraire",
                 table: "TherapieTrancheHoraires",
                 column: "IdTrancheHoraire");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TherapieTrancheHoraires_therapieId",
-                table: "TherapieTrancheHoraires",
-                column: "therapieId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TherapieTrancheHoraires_trancheHoraireId",
-                table: "TherapieTrancheHoraires",
-                column: "trancheHoraireId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Toillettes_CategorieDesSoinId",

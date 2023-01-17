@@ -10,6 +10,7 @@ namespace MaisonReposApi.Helper
         public MappingProfile()
         {
             CreateMap<Fonction, FonctionDto>().ReverseMap() ;
+
             CreateMap<Personnel, RegisterFormPersonnel>().ReverseMap();
 
             CreateMap<Personnel, PersonnelDto>().ReverseMap();
@@ -29,6 +30,10 @@ namespace MaisonReposApi.Helper
             CreateMap<Parametre,ParametreDto>().ReverseMap();
 
             CreateMap<TrancheHoireDto,TrancheHoraire>().ReverseMap();
+
+            CreateMap<TherapieTrancheHoraire, TherapieTrancheHoraireDto>().ReverseMap();
+
+            CreateMap<Therapie, TherapieDto>().ReverseMap();
 
 
 

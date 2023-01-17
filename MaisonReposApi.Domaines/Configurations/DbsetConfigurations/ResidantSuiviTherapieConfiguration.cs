@@ -22,17 +22,34 @@ namespace MaisonReposApi.Domaines.Configurations.DbsetConfigurations
             .HasForeignKey(rsTh => rsTh.PersonnelDoneId)
             .OnDelete(DeleteBehavior.NoAction);
 
+
+
+
+
+
             //Many- to - Many (residantSuivi -Therapies)
-            builder.HasOne<ResidantSuivi>()
-           .WithMany(rs => rs.ResidantSuiviTherapies)
-           .HasForeignKey(rsTh => rsTh.IdResidantSuivi)
-            .OnDelete(DeleteBehavior.NoAction);
+            // builder.HasOne<ResidantSuivi>()
+            //.WithMany(rs => rs.ResidantSuiviTherapies)
+            //.HasForeignKey(rsTh => rsTh.IdResidantSuivi)
+            // .OnDelete(DeleteBehavior.NoAction);
 
 
-            builder.HasOne<Therapie>()
-           .WithMany(t => t.ResidantSuiviTherapies)
-           .HasForeignKey(rsTh => rsTh.IdTherapie)
-            .OnDelete(DeleteBehavior.NoAction);
+            // builder.HasOne<Therapie>()
+            //.WithMany(t => t.ResidantSuiviTherapies)
+            //.HasForeignKey(rsTh => rsTh.IdTherapie)
+            // .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(x => x.residantSuivi)
+            .WithMany(x => x.ResidantSuiviTherapies)
+            .HasForeignKey(x => x.IdResidantSuivi)
+             .OnDelete(DeleteBehavior.NoAction);
+
+
+            builder.HasOne(x => x.therapie)
+           .WithMany(x => x.ResidantSuiviTherapies)
+           .HasForeignKey(x => x.IdTherapie)
+           .OnDelete(DeleteBehavior.NoAction);
+
 
 
         }

@@ -1,5 +1,7 @@
-﻿using MaisonReposApi.Entities;
+﻿using AutoMapper;
+using MaisonReposApi.Entities;
 using MaisonReposApi.Interfaces.GeneriqueInterface;
+using MaisonReposApi.Models.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,16 +12,19 @@ namespace MaisonReposApi.Controllers
     public class TherapieController : ControllerBase
     {
         private readonly IBaseInterfaceService<Therapie> _baseInterfaceService;
+        private readonly IMapper _mapper;
 
-        public TherapieController(IBaseInterfaceService<Therapie> baseInterfaceService)
+        public TherapieController(IBaseInterfaceService<Therapie> baseInterfaceService, IMapper mapper)
         {
            _baseInterfaceService = baseInterfaceService;
+           _mapper = mapper;
         }
 
         [HttpGet]
         public IActionResult GetAllTherapies()
         {
-            return Ok(_baseInterfaceService.GetAllElements());
+            var elementMap = _mapper.Map<List<TherapieDto>>(_baseInterfaceService.GetAllElements());
+            return Ok(elementMap);
         }
 
 
@@ -32,12 +37,14 @@ namespace MaisonReposApi.Controllers
 
 
         [HttpPost]
-        public IActionResult CreateTherapie(Therapie createTherapie)
+        public IActionResult CreateTherapie(TherapieDto createTherapie)
         {
             if (createTherapie is null) return BadRequest("Empty Forms!");
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            if(!_baseInterfaceService.CreateElement(createTherapie))
+            var createElementMap = _mapper.Map<Therapie>(createTherapie);
+
+            if(!_baseInterfaceService.CreateElement(createElementMap))
             {
                 ModelState.AddModelError(string.Empty, "Something went wrong on Server !");
                 return BadRequest(ModelState);
@@ -48,7 +55,7 @@ namespace MaisonReposApi.Controllers
 
 
         [HttpPut("{therapieId}")]
-        public IActionResult UpdateTherapie(int therapieId, Therapie updateTherapie)
+        public IActionResult UpdateTherapie(int therapieId, TherapieDto updateTherapie)
         {
             if (updateTherapie is null) return BadRequest("Empty forms !");
 
@@ -56,7 +63,10 @@ namespace MaisonReposApi.Controllers
 
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            if (!_baseInterfaceService.UpdateElement(updateTherapie))
+            var updateElementMap = _mapper.Map<Therapie>(updateTherapie);
+
+
+            if (!_baseInterfaceService.UpdateElement(updateElementMap))
             {
                 ModelState.AddModelError(string.Empty, "Something went wrong on Server !");
                 return BadRequest(ModelState);

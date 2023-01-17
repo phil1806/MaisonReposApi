@@ -36,6 +36,7 @@ builder.Services.AddScoped<IBaseInterfaceService<Toillette>, ToilletesService>()
 builder.Services.AddScoped<IBaseInterfaceService<Selle>, SelleService>();
 builder.Services.AddScoped<IBaseInterfaceService<Boisson>, BoissonService>();
 builder.Services.AddScoped<IBaseInterfaceService<Therapie>, TherapieService>();
+builder.Services.AddScoped<IBaseInterfaceService<TherapieTrancheHoraire>, TherapieTrancheHoraireService>();
 
 
 //Ici je fais appel à ma connectionString

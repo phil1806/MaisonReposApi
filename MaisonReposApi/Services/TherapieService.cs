@@ -20,6 +20,16 @@ namespace MaisonReposApi.Services
 
         public bool DeleteElement(Therapie element)
         {
+            var listeElementTabManyToMany = _context.TherapieTrancheHoraires.Where(x => x.IdTherapie == element.Id);
+
+            if(listeElementTabManyToMany != null)
+            {
+                foreach (var item in listeElementTabManyToMany)
+                {
+                    _context.Remove(item);
+                }
+                    _context.SaveChanges();
+            }
             _context.Remove(element);
 
             return Save();
