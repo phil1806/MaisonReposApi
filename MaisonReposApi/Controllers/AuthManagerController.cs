@@ -1,14 +1,10 @@
 ﻿using AutoMapper;
-using MaisonReposApi.Domaines.DataContext;
 using MaisonReposApi.Entities;
 using MaisonReposApi.Interfaces;
-using MaisonReposApi.Models.Dtos;
 using MaisonReposApi.Models.Forms;
-using MaisonReposApi.Services;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
+
+
 
 namespace MaisonReposApi.Controllers
 {

@@ -1,6 +1,7 @@
 ﻿using MaisonReposApi.Domaines.DataContext;
 using MaisonReposApi.Entities;
 using MaisonReposApi.Interfaces;
+using System.Xml.Linq;
 
 namespace MaisonReposApi.Services
 {
@@ -13,81 +14,59 @@ namespace MaisonReposApi.Services
            _context = context;
         }
 
-        /// <summary>
-        /// Permet de créer un nouveau soins
-        /// </summary>
-        /// <param name="soinsAjout"></param>
-        /// <returns>Boolean</returns>
-        public bool CreateSoinsAjout(SoinsAjout SoinsToCreate)
-        {
-            _context.Add(SoinsToCreate);
-            return Save();
-        }
-
-
-        /// <summary>
-        /// Suppression d'un soins ajouter
-        /// </summary>
-        /// <param name="soinsToDelete"></param>
-        /// <returns></returns>
-        public bool DeleteSoinsAjout(SoinsAjout soinsToDelete)
-        {
-            _context.Remove(soinsToDelete);
-            return Save();
-        }
-
-
-        /// <summary>
-        /// Permet de récuperer Liste des soins ajouter
-        /// </summary>
-        /// <returns>IColection<SoinsAjout></returns>
         public ICollection<SoinsAjout> GetAllSoinsAjouter()
         {
             return _context.SoinsAjouts.ToList();
 
         }
 
-        /// <summary>
-        /// Permet de récupérer un soins ajouter via son Id
-        /// </summary>
-        /// <param name="soinsAjouterId"></param>
-        /// <returns>SoinsAjouter</returns>
         public SoinsAjout GetSoinsAjoutById(int soinsAjouterId)
         {
             return _context.SoinsAjouts.Where(s => s.Id == soinsAjouterId).FirstOrDefault();
         }
 
 
-        /// <summary>
-        /// Permet de save les données dans la base de données
-        /// </summary>
-        /// <returns>Boolean</returns>
+        public bool SoinsExistById(int id)
+        {
+            return _context.SoinsAjouts.Any(s => s.Id == id);
+        }
+
+
+        public bool CreateSoinsAjout(SoinsAjout SoinsToCreate)
+        {
+            _context.Add(SoinsToCreate);
+            return Save();
+        }
+
+        public bool UpdateSoinsAjout(SoinsAjout soinsAjout)
+        {
+            _context.Update(soinsAjout);
+            return Save();
+        }
+
+        public bool DeleteSoinsAjout(SoinsAjout soinsToDelete)
+        {
+            //Je recupère la liste des élements se trouvant dans la tab Many-to-Many
+            var listeElementTabManyToMany = _context.SoinsAjoutResidantSuivis.Where(x => x.IdSoinsAjout == soinsToDelete.Id);
+
+            //Je remove les elements selections dans la tab => Raison :  c'est pour palier au pb du Delete No action
+            if (listeElementTabManyToMany != null)
+            {
+                foreach (var item in listeElementTabManyToMany)
+                {
+                    _context.Remove(item);
+                }
+                _context.SaveChanges();
+            }
+            _context.Remove(soinsToDelete);
+            return Save();
+        }
+
         public bool Save()
         {
             var saved = _context.SaveChanges();
             return saved > 0 ? true : false;
         }
 
-        /// <summary>
-        /// Permet de verifier si un soin existe via son Id  dans base de données
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns>Booléan</returns>
-        public bool SoinsExistById(int id)
-        {
-            return _context.SoinsAjouts.Any(s => s.Id == id);
-        }
-    
-
-        /// <summary>
-        /// Permet de mettre à jour un soins ajouté
-        /// </summary>
-        /// <param name="soinsAjout"></param>
-        /// <returns>Booléan</returns>
-        public bool UpdateSoinsAjout(SoinsAjout soinsAjout)
-        {
-            _context.Update(soinsAjout);
-            return Save();
-        }
     }
 }

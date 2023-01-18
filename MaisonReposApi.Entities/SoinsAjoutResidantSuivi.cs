@@ -12,6 +12,8 @@ namespace MaisonReposApi.Entities
         public int IdSoinsAjout { get; set; }
         public int IdResidantSuivi { get; set; }
         public int PersonnelId { get; set; } //Foreign Key
+
+        //Propriete de Navigation
         public ResidantSuivi? ResidantSuivi { get; set; }
         public SoinsAjout? SoinsAjout { get; set; }
      

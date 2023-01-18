@@ -20,8 +20,10 @@ namespace MaisonReposApi.Services
 
         public bool DeleteElement(Therapie element)
         {
+            //Je recupère la liste des élements se trouvant dans la tab Many-to-Many
             var listeElementTabManyToMany = _context.TherapieTrancheHoraires.Where(x => x.IdTherapie == element.Id);
 
+            //Je remove les elements selections dans la tab => Raison :  c'est palier au pb du Delete No action
             if(listeElementTabManyToMany != null)
             {
                 foreach (var item in listeElementTabManyToMany)
@@ -30,6 +32,7 @@ namespace MaisonReposApi.Services
                 }
                     _context.SaveChanges();
             }
+
             _context.Remove(element);
 
             return Save();

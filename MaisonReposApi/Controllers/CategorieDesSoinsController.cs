@@ -2,7 +2,6 @@
 using MaisonReposApi.Entities;
 using MaisonReposApi.Interfaces;
 using MaisonReposApi.Models.Dtos;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MaisonReposApi.Controllers

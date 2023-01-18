@@ -43,7 +43,7 @@ namespace MaisonReposApi.Controllers
                 ModelState.AddModelError(string.Empty, "Something went wrong on  server");
                 return BadRequest(ModelState);
             }
-            return Ok("Succesfully Created !");
+            return Ok("Successfully Created !");
 
         }
 

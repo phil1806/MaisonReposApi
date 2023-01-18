@@ -2,7 +2,6 @@
 using MaisonReposApi.Entities;
 using MaisonReposApi.Interfaces.GeneriqueInterface;
 using MaisonReposApi.Models.Dtos;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MaisonReposApi.Controllers
@@ -40,6 +39,24 @@ namespace MaisonReposApi.Controllers
                 return BadRequest(ModelState);
             }
             return Ok("Successfully Created !");
+        }
+
+        [HttpDelete("{therapieId}/{trancheHoraireId}")]
+        public  IActionResult DeleteElement(int therapieId, int trancheHoraireId)
+        {
+            if (!_baseInterfaceService.ElementExists(therapieId)) return BadRequest("ELement don't exists !");
+
+            var elementToDelete = _baseInterfaceService.GetAllElements().Where(x => x.IdTherapie == therapieId && x.IdTrancheHoraire == trancheHoraireId).FirstOrDefault();
+
+            if (elementToDelete is null) return BadRequest("Element don't exists");
+
+            if (!_baseInterfaceService.DeleteElement(elementToDelete))
+            {
+                ModelState.AddModelError(string.Empty, "Something went wrong on server !");
+                return BadRequest(ModelState);
+            }
+
+            return Ok("Successfully Deleted !");
         }
 
     }

@@ -1,6 +1,7 @@
 ﻿using MaisonReposApi.Domaines.DataContext;
 using MaisonReposApi.Entities;
 using MaisonReposApi.Interfaces.GeneriqueInterface;
+using System.Xml.Linq;
 
 namespace MaisonReposApi.Services
 {
@@ -13,76 +14,58 @@ namespace MaisonReposApi.Services
             _context = context;
         }
 
-        /// <summary>
-        /// Permet de créer une tranche horaire
-        /// </summary>
-        /// <param name="element"></param>
-        /// <returns></returns>
-        public bool CreateElement(TrancheHoraire element)
-        {
-            _context.Add(element);
-            return Save();
-        }
 
-        /// <summary>
-        /// Delete les elemens
-        /// </summary>
-        /// <param name="trancheHoraire"></param>
-        /// <returns>Boolean</returns>
-        public bool DeleteElement(TrancheHoraire trancheHoraire)
-        {
-           _context.Remove(trancheHoraire);
-            return Save();
-        }
-
-        /// <summary>
-        /// Permet de verifier si l'élement existe
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns>Booléan</returns>
-        public bool ElementExists(int Id)
-        {
-           return _context.TrancheHoraires.Any(el => el.Id == Id);
-        }
-
-        /// <summary>
-        /// recupère la liste des tranches horaires
-        /// </summary>
-        /// <returns>Icollection<TrancheHoire></returns>
         public ICollection<TrancheHoraire> GetAllElements()
         {
             return _context.TrancheHoraires.ToList();
         }
 
 
-        /// <summary>
-        /// Permet de recupérer une tranche hoiraire
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns>tracheHoire</returns>
         public TrancheHoraire GetElementById(int id)
         {
             return _context.TrancheHoraires.Where(t => t.Id == id).FirstOrDefault();
         }
 
-        /// <summary>
-        /// Peremet de save  les données
-        /// </summary>
-        /// <returns>Boolean</returns>
-        public bool Save()
+
+        public bool ElementExists(int Id)
         {
-            return _context.SaveChanges() > 0 ? true : false;
+            return _context.TrancheHoraires.Any(el => el.Id == Id);
+        }
+   
+        public bool CreateElement(TrancheHoraire element)
+        {
+            _context.Add(element);
+            return Save();
         }
 
-        /// <summary>
-        /// Pemet de faire une mise à jour
-        /// </summary>
-        /// <param name="element"></param>
-        /// <returns>Boolean</returns>
+
         public bool UpdateElement(TrancheHoraire element)
         {
             _context.Update(element);
             return Save();
+        }
+
+        public bool DeleteElement(TrancheHoraire trancheHoraire)
+        {
+            //Je recupère la liste des élements se trouvant dans la tab Many-to-Many
+            var listeElementTabManyToMany = _context.TherapieTrancheHoraires.Where(x => x.IdTrancheHoraire == trancheHoraire.Id);
+
+            //Je remove les elements selections dans la tab => Raison :  c'est palier au pb du Delete No action
+            if (listeElementTabManyToMany != null)
+            {
+                foreach (var item in listeElementTabManyToMany)
+                {
+                    _context.Remove(item);
+                }
+                _context.SaveChanges();
+            }
+            _context.Remove(trancheHoraire);
+            return Save();
+        }
+
+        public bool Save()
+        {
+            return _context.SaveChanges() > 0 ? true : false;
         }
     }
 }

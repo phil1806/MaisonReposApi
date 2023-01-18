@@ -4,49 +4,52 @@ using MaisonReposApi.Interfaces.GeneriqueInterface;
 
 namespace MaisonReposApi.Services
 {
-    public class TherapieTrancheHoraireService : IBaseInterfaceService<TherapieTrancheHoraire>
+    public class SoinsAjout_ResidantSuiviService : IBaseInterfaceService<SoinsAjoutResidantSuivi>
     {
         private readonly MyDbContext _context;
 
-        public TherapieTrancheHoraireService(MyDbContext context)
+        public SoinsAjout_ResidantSuiviService(MyDbContext context)
         {
             _context = context;
         }
 
-        public ICollection<TherapieTrancheHoraire> GetAllElements()
+        public ICollection<SoinsAjoutResidantSuivi> GetAllElements()
         {
-            return _context.TherapieTrancheHoraires.ToList();
+            return _context.SoinsAjoutResidantSuivis.ToList();
         }
 
-        public bool CreateElement(TherapieTrancheHoraire element)
+        public bool CreateElement(SoinsAjoutResidantSuivi element)
         {
             _context.Add(element);
             return Save();
         }
 
-        public bool DeleteElement(TherapieTrancheHoraire element)
+        public bool DeleteElement(SoinsAjoutResidantSuivi element)
         {
             _context.Remove(element);
             return Save();
         }
+
 
         public bool Save()
         {
             return _context.SaveChanges() > 0 ? true : false;
         }
 
-        /*-------------------------------------------------------------*/
-        public bool ElementExists(int Id)
-        {
-           return _context.TherapieTrancheHoraires.Any(x => x.IdTherapie == Id);
-        }
 
-        public TherapieTrancheHoraire GetElementById(int id)
+        /*-----------------------------------------------------------------------------*/
+        public bool ElementExists(int Id)
         {
             throw new NotImplementedException();
         }
 
-        public bool UpdateElement(TherapieTrancheHoraire element)
+        public SoinsAjoutResidantSuivi GetElementById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public bool UpdateElement(SoinsAjoutResidantSuivi element)
         {
             throw new NotImplementedException();
         }

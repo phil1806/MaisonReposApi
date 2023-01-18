@@ -35,6 +35,8 @@ namespace MaisonReposApi.Helper
 
             CreateMap<Therapie, TherapieDto>().ReverseMap();
 
+            CreateMap<SoinsAjoutResidantSuivi, SoinsAjoutResidantSuiviDto>().ReverseMap();
+
 
 
 
