@@ -18,10 +18,21 @@ namespace MaisonReposApi.Services
             return _context.SoinsAjoutResidantSuivis.ToList();
         }
 
+        public SoinsAjoutResidantSuivi GetElementById(int id)
+        {
+            return _context.SoinsAjoutResidantSuivis.Where(x => x.Id == id).FirstOrDefault();
+        }
+
+
         public bool CreateElement(SoinsAjoutResidantSuivi element)
         {
             _context.Add(element);
             return Save();
+        }
+
+        public bool ElementExists(int Id)
+        {
+            return _context.SoinsAjoutResidantSuivis.Any(x => x.Id == Id);
         }
 
         public bool DeleteElement(SoinsAjoutResidantSuivi element)
@@ -30,24 +41,14 @@ namespace MaisonReposApi.Services
             return Save();
         }
 
-
         public bool Save()
         {
             return _context.SaveChanges() > 0 ? true : false;
         }
 
 
+
         /*-----------------------------------------------------------------------------*/
-        public bool ElementExists(int Id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public SoinsAjoutResidantSuivi GetElementById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
 
         public bool UpdateElement(SoinsAjoutResidantSuivi element)
         {

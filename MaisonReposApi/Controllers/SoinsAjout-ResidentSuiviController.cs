@@ -49,9 +49,19 @@ namespace MaisonReposApi.Controllers
         }
 
 
-        [HttpDelete("{soinsAjoutId}/{residentSuiviId}")]
-        public IActionResult DeleteElement(int soinsAjoutId, int residentSuiviId)
+        [HttpDelete("{elementId}")]
+        public IActionResult DeleteElement(int elementId)
         {
+            if(!_baseInterfaceService.ElementExists(elementId)) return BadRequest("Element don't exists");
+
+            var elementToDelete = _baseInterfaceService.GetElementById(elementId);
+
+
+            if(!_baseInterfaceService.DeleteElement(elementToDelete))
+            {
+                ModelState.AddModelError(string.Empty, "Something went wrong on serve");
+                return BadRequest(ModelState);
+            }
             return Ok("Successfully Deleted");
         }
 
