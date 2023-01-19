@@ -46,8 +46,6 @@ namespace MaisonReposApi.Services
             return _context.SaveChanges() > 0 ? true : false;
         }
 
-
-
         /*-----------------------------------------------------------------------------*/
 
         public bool UpdateElement(SoinsAjoutResidantSuivi element)
